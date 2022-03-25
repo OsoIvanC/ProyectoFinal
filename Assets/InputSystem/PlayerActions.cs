@@ -72,7 +72,7 @@ namespace OsoScripts.Player
                 {
                     ""name"": """",
                     ""id"": ""142b0a8b-3655-4725-a55f-a72372976ca9"",
-                    ""path"": ""<Keyboard>/d"",
+                    ""path"": ""<Keyboard>/leftShift"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Player"",

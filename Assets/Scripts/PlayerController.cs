@@ -18,20 +18,25 @@ namespace OsoScripts.Player
     }
     public class PlayerController : MonoBehaviour
     {
+        [Header("Input")]
         PlayerActions actions;
-        Vector2 movement;
-        Animator animator;
 
-        [SerializeField]
+
+        [Header("Player Variables")]
+        [SerializeField] 
         PlayerState state;
         [SerializeField]
         float speed;
         [SerializeField]
-        float angleRot;
+        float teleportDistance;
+        Vector2 movement;
 
+
+        [Header("Rotation")]
+        [SerializeField]
+        float angleRot;
         [SerializeField]
         float turnSpeed;
-
         float turnSmooth;
 
         void Awake()
@@ -39,7 +44,8 @@ namespace OsoScripts.Player
             movement = Vector2.zero;
 
             actions = new PlayerActions();
-            animator = GetComponent<Animator>();
+
+            actions.Movement.DASH.performed += _ => Teleport();
 
             actions.Movement.WALK.performed += ctx => movement = ctx.ReadValue<Vector2>();
             actions.Movement.WALK.canceled += _ => movement = Vector2.zero;
@@ -52,10 +58,12 @@ namespace OsoScripts.Player
 
         void Movement(Vector2 direction)
         {
-            if(direction == Vector2.zero)
+            direction = direction.normalized;
+
+            if(direction.magnitude <= 0)
             {
                 state = PlayerState.IDLE;
-                animator.SetTrigger("IDLE");
+        
             }
             else
             {
@@ -68,9 +76,15 @@ namespace OsoScripts.Player
 
                 transform.rotation = targetRotation;
                 transform.Translate(Vector3.forward * speed * Time.deltaTime);
-                animator.SetTrigger("WALKING");
+  
             }
 
+        }
+        void Teleport()
+        {
+            Vector3 teleportVector = transform.forward * teleportDistance;
+
+            transform.position += teleportVector;
         }
         private void OnEnable()
         {
