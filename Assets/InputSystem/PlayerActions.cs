@@ -55,6 +55,15 @@ namespace OsoScripts.Player
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""LOOK"",
+                    ""type"": ""Value"",
+                    ""id"": ""e5055867-5068-45e4-9601-f6b4675a64a3"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -145,6 +154,17 @@ namespace OsoScripts.Player
                     ""action"": ""WALK"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e35533e9-4697-4300-9bf5-131c298d1395"",
+                    ""path"": ""<Mouse>/position"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""LOOK"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -230,6 +250,7 @@ namespace OsoScripts.Player
             m_Movement_WALK = m_Movement.FindAction("WALK", throwIfNotFound: true);
             m_Movement_JUMP = m_Movement.FindAction("JUMP", throwIfNotFound: true);
             m_Movement_DASH = m_Movement.FindAction("DASH", throwIfNotFound: true);
+            m_Movement_LOOK = m_Movement.FindAction("LOOK", throwIfNotFound: true);
             // Interactions
             m_Interactions = asset.FindActionMap("Interactions", throwIfNotFound: true);
             m_Interactions_Melee = m_Interactions.FindAction("Melee", throwIfNotFound: true);
@@ -297,6 +318,7 @@ namespace OsoScripts.Player
         private readonly InputAction m_Movement_WALK;
         private readonly InputAction m_Movement_JUMP;
         private readonly InputAction m_Movement_DASH;
+        private readonly InputAction m_Movement_LOOK;
         public struct MovementActions
         {
             private @PlayerActions m_Wrapper;
@@ -304,6 +326,7 @@ namespace OsoScripts.Player
             public InputAction @WALK => m_Wrapper.m_Movement_WALK;
             public InputAction @JUMP => m_Wrapper.m_Movement_JUMP;
             public InputAction @DASH => m_Wrapper.m_Movement_DASH;
+            public InputAction @LOOK => m_Wrapper.m_Movement_LOOK;
             public InputActionMap Get() { return m_Wrapper.m_Movement; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -322,6 +345,9 @@ namespace OsoScripts.Player
                     @DASH.started -= m_Wrapper.m_MovementActionsCallbackInterface.OnDASH;
                     @DASH.performed -= m_Wrapper.m_MovementActionsCallbackInterface.OnDASH;
                     @DASH.canceled -= m_Wrapper.m_MovementActionsCallbackInterface.OnDASH;
+                    @LOOK.started -= m_Wrapper.m_MovementActionsCallbackInterface.OnLOOK;
+                    @LOOK.performed -= m_Wrapper.m_MovementActionsCallbackInterface.OnLOOK;
+                    @LOOK.canceled -= m_Wrapper.m_MovementActionsCallbackInterface.OnLOOK;
                 }
                 m_Wrapper.m_MovementActionsCallbackInterface = instance;
                 if (instance != null)
@@ -335,6 +361,9 @@ namespace OsoScripts.Player
                     @DASH.started += instance.OnDASH;
                     @DASH.performed += instance.OnDASH;
                     @DASH.canceled += instance.OnDASH;
+                    @LOOK.started += instance.OnLOOK;
+                    @LOOK.performed += instance.OnLOOK;
+                    @LOOK.canceled += instance.OnLOOK;
                 }
             }
         }
@@ -402,6 +431,7 @@ namespace OsoScripts.Player
             void OnWALK(InputAction.CallbackContext context);
             void OnJUMP(InputAction.CallbackContext context);
             void OnDASH(InputAction.CallbackContext context);
+            void OnLOOK(InputAction.CallbackContext context);
         }
         public interface IInteractionsActions
         {

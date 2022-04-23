@@ -2,99 +2,198 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using OsoScripts.Base;
 using OsoScripts.Player;
 
 namespace OsoScripts.Player
 {
-    
-    public enum PlayerState
-    {
-        IDLE,
-        ATTACKING,
-        FIRING,
-        DASHING,
-        WALKING,
-        DEATH
-    }
     public class PlayerController : MonoBehaviour
     {
-        [Header("Input")]
-        PlayerActions actions;
-
-
-        [Header("Player Variables")]
-        [SerializeField] 
-        PlayerState state;
-        [SerializeField]
-        float speed;
+        [Header("Player Stats")]
+        public UnitStats myStats;
         [SerializeField]
         float teleportDistance;
-        Vector2 movement;
-
-
-        [Header("Rotation")]
         [SerializeField]
-        float angleRot;
+        bool shooting;
+        
+        [Header("Gun Info")]
         [SerializeField]
-        float turnSpeed;
-        float turnSmooth;
+        GameObject bulletPrefab;
+        [SerializeField]
+        Transform barrelPosition;
 
+        CharacterController controller;
+        PlayerActions playerActions;
+       
+        
+        Vector3 velocity;
+        //Vector3 _input;
+        Vector3 mousePos;
+        Vector2 moveVector;
+
+        [Header("Extras")]
+        [SerializeField]
+        float turnSpeed = 360;
+        float nextFire;
+        [SerializeField]
+        Animator animator;
+
+        [Header("Camera")]
+        [SerializeField]
+        Transform cameraTransform;
+        
+
+        [SerializeField]
+        Vector3 offset;
+
+        [SerializeField]
+        GameObject cube;
         void Awake()
         {
-            movement = Vector2.zero;
+            nextFire = -1f;
+            controller = GetComponent<CharacterController>();
+            playerActions = new PlayerActions();
 
-            actions = new PlayerActions();
+            //WALK ACTION
+            playerActions.Movement.WALK.performed += ctx => moveVector = ctx.ReadValue<Vector2>().normalized;
+            playerActions.Movement.WALK.canceled += _ => moveVector = Vector2.zero;
 
-            actions.Movement.DASH.performed += _ => Teleport();
+            //TELEPORT ACTION
+            playerActions.Movement.DASH.performed += _ => Teleport();
+            
+            //SHOOT ACTION
+            playerActions.Interactions.Shoot.performed += _ => shooting = true;
+            playerActions.Interactions.Shoot.canceled += _ => shooting = false;
 
-            actions.Movement.WALK.performed += ctx => movement = ctx.ReadValue<Vector2>();
-            actions.Movement.WALK.canceled += _ => movement = Vector2.zero;
+            //LOOK ACTION
+           
+
         }
 
         private void Update()
         {
-            Movement(movement);
+            Move();
+            //Look();
+            //Shoot();
+            LookMouse();
+            Gravity();
         }
 
-        void Movement(Vector2 direction)
+        private void LateUpdate()
         {
-            direction = direction.normalized;
+            CameraFollow();
+        }
+        void Move()
+        {
+            float x = moveVector.x;
+            float z = moveVector.y;
 
-            if(direction.magnitude <= 0)
+            Vector3 m = new Vector3();
+
+            if(x > 0)
             {
-                state = PlayerState.IDLE;
-        
+                m = transform.right;
             }
-            else
+            if (x < 0)
             {
-                state = PlayerState.WALKING;
-
-                Vector3 movDir = new Vector3(direction.x, 0, direction.y);
-
-                Quaternion targetRotation = Quaternion.LookRotation(movDir);
-                targetRotation = Quaternion.RotateTowards(transform.rotation, targetRotation, angleRot * Time.deltaTime);
-
-                transform.rotation = targetRotation;
-                transform.Translate(Vector3.forward * speed * Time.deltaTime);
-  
+                m = -transform.right;
             }
+            if(z > 0)
+            {
+                m = transform.forward;
+            }
+            if(z < 0)
+            {
+                m = -transform.forward;
+                
+            }
+
+            animator.SetFloat("X",x);
+            animator.SetFloat("Y",z);
+
+            controller.Move( m.normalized * myStats.movementSpeed * Time.deltaTime);
+        }
+
+        void Look()
+        {
+
+            //if (_input == Vector3.zero)
+                //return;
+          
+            
+            //var rot = Quaternion.LookRotation(_input.ToIso(), Vector3.up);
+
+            //transform.rotation = Quaternion.RotateTowards(transform.rotation,rot,turnSpeed * Time.deltaTime);
 
         }
+
+        void LookMouse()
+        {
+           
+            
+            Ray ray = Camera.main.ScreenPointToRay(playerActions.Movement.LOOK.ReadValue<Vector2>());
+            RaycastHit hit;
+
+
+            if (Physics.Raycast(ray, out hit))
+            {
+                mousePos = new Vector3(hit.point.x, 0, hit.point.z);
+            }
+
+            Vector3 mPos = new Vector3(transform.position.x, 0, transform.position.z);
+            Vector3 rotPos = mousePos - mPos;
+            var rot = Quaternion.LookRotation(rotPos);
+
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, rot, turnSpeed * Time.deltaTime);
+
+        }
+        void Gravity()
+        {
+            if(controller.isGrounded && velocity.y < 0)
+            {
+                velocity.y = -2f;
+            }
+            
+            velocity.y += myStats.gravity * Time.deltaTime;
+
+            
+            controller.Move(velocity * Time.deltaTime);
+        }
+
+        void CameraFollow()
+        {
+            cameraTransform.position = new Vector3(transform.position.x, 0, transform.position.z) + offset;
+        }
+
         void Teleport()
         {
-            Vector3 teleportVector = transform.forward * teleportDistance;
+            Debug.Log("Teleport");
+            controller.Move(transform.forward * teleportDistance);
+        }
 
-            transform.position += teleportVector;
+        void Shoot()
+        {
+            if (!shooting)
+                return;
+
+            if (Time.time > nextFire)
+            {
+               nextFire = Time.time + 1 / myStats.attackRate;
+               Instantiate(bulletPrefab, barrelPosition.position, barrelPosition.rotation);
+               //Instanciar
+            }
         }
         private void OnEnable()
         {
-            actions.Enable();
+            playerActions.Movement.Enable();
+            playerActions.Interactions.Enable();
         }
 
         private void OnDisable()
         {
-            actions.Disable();
+            playerActions.Movement.Disable();
+            playerActions.Interactions.Disable();
         }
-    }
 
+    }
 }
