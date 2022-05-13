@@ -1,0 +1,17 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+
+
+public enum WeaponType
+{
+    RANGE,
+    MELEE
+}
+
+
+public class Weapon : MonoBehaviour
+{
+    
+}

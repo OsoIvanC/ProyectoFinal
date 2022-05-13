@@ -1,0 +1,5 @@
+newmtl ProBuilder_Default_URP
+map_Kd C:/Users/Ivan/Documents/GitHub/ProyectoFinal/FinalProject/Assets/s/com.unity.probuilder/Content/Resources/Textures/GridBox_Default.png
+Kd 0.5 0.5 0.5
+d 1
+
