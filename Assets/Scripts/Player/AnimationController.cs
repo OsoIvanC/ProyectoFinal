@@ -13,15 +13,38 @@ public class AnimationController : MonoBehaviour
 
     private void Update()
     {
-        var _input =  new Vector3(InputHandler._instance._inputVector.x,0, InputHandler._instance._inputVector.y) ;
+        var targetVector =  new Vector3();
+        
+        if (InputHandler._instance._inputVector.x > 0)
+        {
+            targetVector = transform.right;
+        }
 
-        if (_input.magnitude > 1.0f)
-            _input = _input.normalized;
+        if (InputHandler._instance._inputVector.x < 0)
+        {
+            targetVector = -transform.right;
+        }
 
-        _input = transform.InverseTransformDirection(_input);
+        if (InputHandler._instance._inputVector.y > 0)
+        {
+            targetVector = transform.forward;
+        }
 
-        animator.SetFloat("X", _input.x,0.05f,Time.deltaTime);
-        animator.SetFloat("Y", _input.z,0.05f, Time.deltaTime);
+        if (InputHandler._instance._inputVector.y < 0)
+        {
+            targetVector = -transform.forward;
+        }
+        if (InputHandler._instance._inputVector.x == 0 && InputHandler._instance._inputVector.y == 0)
+        {
+            targetVector = Vector3.zero;
+        }
+
+
+
+        targetVector = transform.InverseTransformDirection(targetVector);
+
+        animator.SetFloat("X", targetVector.x,0.05f,Time.deltaTime);
+        animator.SetFloat("Y", targetVector.z,0.05f, Time.deltaTime);
     }
 
     

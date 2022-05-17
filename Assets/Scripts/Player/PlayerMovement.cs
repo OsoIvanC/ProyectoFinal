@@ -29,7 +29,32 @@ public class PlayerMovement : MonoBehaviour
 
     private void Move()
     {
-        var targetVector = new Vector3(InputHandler._instance._inputVector.x,0, InputHandler._instance._inputVector.y);
+        Vector3 targetVector = new Vector3();
+
+        if(InputHandler._instance._inputVector.x > 0)
+        {
+            targetVector = transform.right;
+        }
+
+        if (InputHandler._instance._inputVector.x < 0)
+        {
+            targetVector = -transform.right;
+        }
+
+        if (InputHandler._instance._inputVector.y > 0)
+        {
+            targetVector = transform.forward;
+        }
+
+        if (InputHandler._instance._inputVector.y < 0)
+        {
+            targetVector = -transform.forward;
+        }
+        if (InputHandler._instance._inputVector.x == 0 &&  InputHandler._instance._inputVector.y == 0)
+        {
+            targetVector = Vector3.zero;
+        }
+        
         controller.Move(targetVector * movementSpeed * Time.deltaTime);
     }
 
@@ -40,8 +65,10 @@ public class PlayerMovement : MonoBehaviour
         if(Physics.Raycast(ray,out RaycastHit hitInfo,maxDistance:500f))
         {
             var target = hitInfo.point;
-            target.y = gfxTransform.position.y;
-            gfxTransform.LookAt(target);
+            target.y = transform.position.y;
+
+            if(Vector3.Distance(transform.position, target) > 1f)
+                transform.LookAt(target);
 
             //gfxTransform.eulerAngles = new Vector3(gfxTransform.eulerAngles.x, (Mathf.Round(gfxTransform.eulerAngles.y / angleClamp) * angleClamp), gfxTransform.eulerAngles.z);
 
