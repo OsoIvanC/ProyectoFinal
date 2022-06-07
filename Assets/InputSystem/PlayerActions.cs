@@ -171,16 +171,7 @@ public partial class @PlayerActions : IInputActionCollection2, IDisposable
             ""id"": ""583e8a9f-08dc-437a-819d-395f425e4822"",
             ""actions"": [
                 {
-                    ""name"": ""Melee"",
-                    ""type"": ""Button"",
-                    ""id"": ""8ac91e73-ddc4-49a8-83db-c98ce299afe8"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Shoot"",
+                    ""name"": ""Attack"",
                     ""type"": ""Button"",
                     ""id"": ""5fdce726-4b1e-4727-81de-bd2d3d902099"",
                     ""expectedControlType"": ""Button"",
@@ -196,20 +187,36 @@ public partial class @PlayerActions : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Melee"",
+                    ""type"": ""Value"",
+                    ""id"": ""eca764ff-ac41-4e2b-8453-0d437eb18dba"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""SingleShot"",
+                    ""type"": ""Value"",
+                    ""id"": ""0fa2c6c3-f26d-4e45-abb2-45c9ea4d8b65"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Automatic"",
+                    ""type"": ""Value"",
+                    ""id"": ""097ef72a-0571-426a-a3fa-e5a3299eccd8"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
-                {
-                    ""name"": """",
-                    ""id"": ""3c028fe7-2a8e-47be-83ec-8f37e678faaa"",
-                    ""path"": ""<Keyboard>/q"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Player"",
-                    ""action"": ""Melee"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
                 {
                     ""name"": """",
                     ""id"": ""346b8de5-ac25-425c-8cdc-d8a352e0d058"",
@@ -217,7 +224,7 @@ public partial class @PlayerActions : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Player"",
-                    ""action"": ""Shoot"",
+                    ""action"": ""Attack"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -229,6 +236,39 @@ public partial class @PlayerActions : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""Player"",
                     ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""71328b03-2295-4887-83a2-57c973b94a7d"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Melee"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4161f221-c297-401b-ac64-4b27d61ca989"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SingleShot"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f2d85650-5fa5-4fe7-9230-6db70bd0bbea"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Automatic"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -251,9 +291,11 @@ public partial class @PlayerActions : IInputActionCollection2, IDisposable
         m_Movement_LOOK = m_Movement.FindAction("LOOK", throwIfNotFound: true);
         // Interactions
         m_Interactions = asset.FindActionMap("Interactions", throwIfNotFound: true);
-        m_Interactions_Melee = m_Interactions.FindAction("Melee", throwIfNotFound: true);
-        m_Interactions_Shoot = m_Interactions.FindAction("Shoot", throwIfNotFound: true);
+        m_Interactions_Attack = m_Interactions.FindAction("Attack", throwIfNotFound: true);
         m_Interactions_Interact = m_Interactions.FindAction("Interact", throwIfNotFound: true);
+        m_Interactions_Melee = m_Interactions.FindAction("Melee", throwIfNotFound: true);
+        m_Interactions_SingleShot = m_Interactions.FindAction("SingleShot", throwIfNotFound: true);
+        m_Interactions_Automatic = m_Interactions.FindAction("Automatic", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -370,16 +412,20 @@ public partial class @PlayerActions : IInputActionCollection2, IDisposable
     // Interactions
     private readonly InputActionMap m_Interactions;
     private IInteractionsActions m_InteractionsActionsCallbackInterface;
-    private readonly InputAction m_Interactions_Melee;
-    private readonly InputAction m_Interactions_Shoot;
+    private readonly InputAction m_Interactions_Attack;
     private readonly InputAction m_Interactions_Interact;
+    private readonly InputAction m_Interactions_Melee;
+    private readonly InputAction m_Interactions_SingleShot;
+    private readonly InputAction m_Interactions_Automatic;
     public struct InteractionsActions
     {
         private @PlayerActions m_Wrapper;
         public InteractionsActions(@PlayerActions wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Melee => m_Wrapper.m_Interactions_Melee;
-        public InputAction @Shoot => m_Wrapper.m_Interactions_Shoot;
+        public InputAction @Attack => m_Wrapper.m_Interactions_Attack;
         public InputAction @Interact => m_Wrapper.m_Interactions_Interact;
+        public InputAction @Melee => m_Wrapper.m_Interactions_Melee;
+        public InputAction @SingleShot => m_Wrapper.m_Interactions_SingleShot;
+        public InputAction @Automatic => m_Wrapper.m_Interactions_Automatic;
         public InputActionMap Get() { return m_Wrapper.m_Interactions; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -389,28 +435,40 @@ public partial class @PlayerActions : IInputActionCollection2, IDisposable
         {
             if (m_Wrapper.m_InteractionsActionsCallbackInterface != null)
             {
-                @Melee.started -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnMelee;
-                @Melee.performed -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnMelee;
-                @Melee.canceled -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnMelee;
-                @Shoot.started -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnShoot;
-                @Shoot.performed -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnShoot;
-                @Shoot.canceled -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnShoot;
+                @Attack.started -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnAttack;
+                @Attack.performed -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnAttack;
+                @Attack.canceled -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnAttack;
                 @Interact.started -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnInteract;
                 @Interact.performed -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnInteract;
                 @Interact.canceled -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnInteract;
+                @Melee.started -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnMelee;
+                @Melee.performed -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnMelee;
+                @Melee.canceled -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnMelee;
+                @SingleShot.started -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnSingleShot;
+                @SingleShot.performed -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnSingleShot;
+                @SingleShot.canceled -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnSingleShot;
+                @Automatic.started -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnAutomatic;
+                @Automatic.performed -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnAutomatic;
+                @Automatic.canceled -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnAutomatic;
             }
             m_Wrapper.m_InteractionsActionsCallbackInterface = instance;
             if (instance != null)
             {
-                @Melee.started += instance.OnMelee;
-                @Melee.performed += instance.OnMelee;
-                @Melee.canceled += instance.OnMelee;
-                @Shoot.started += instance.OnShoot;
-                @Shoot.performed += instance.OnShoot;
-                @Shoot.canceled += instance.OnShoot;
+                @Attack.started += instance.OnAttack;
+                @Attack.performed += instance.OnAttack;
+                @Attack.canceled += instance.OnAttack;
                 @Interact.started += instance.OnInteract;
                 @Interact.performed += instance.OnInteract;
                 @Interact.canceled += instance.OnInteract;
+                @Melee.started += instance.OnMelee;
+                @Melee.performed += instance.OnMelee;
+                @Melee.canceled += instance.OnMelee;
+                @SingleShot.started += instance.OnSingleShot;
+                @SingleShot.performed += instance.OnSingleShot;
+                @SingleShot.canceled += instance.OnSingleShot;
+                @Automatic.started += instance.OnAutomatic;
+                @Automatic.performed += instance.OnAutomatic;
+                @Automatic.canceled += instance.OnAutomatic;
             }
         }
     }
@@ -433,8 +491,10 @@ public partial class @PlayerActions : IInputActionCollection2, IDisposable
     }
     public interface IInteractionsActions
     {
-        void OnMelee(InputAction.CallbackContext context);
-        void OnShoot(InputAction.CallbackContext context);
+        void OnAttack(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
+        void OnMelee(InputAction.CallbackContext context);
+        void OnSingleShot(InputAction.CallbackContext context);
+        void OnAutomatic(InputAction.CallbackContext context);
     }
 }

@@ -6,7 +6,7 @@ public class InputHandler : MonoBehaviour
 {
     public static InputHandler _instance;
 
-    PlayerActions actions;
+    public PlayerActions actions { get; private set; }
 
     public Vector2 _inputVector { get; private set; }
     public bool _isShooting { get; private set; }

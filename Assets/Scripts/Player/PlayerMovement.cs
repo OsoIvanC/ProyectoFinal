@@ -54,7 +54,7 @@ public class PlayerMovement : MonoBehaviour
         {
             targetVector = Vector3.zero;
         }
-        
+
         controller.Move(targetVector * movementSpeed * Time.deltaTime);
     }
 
