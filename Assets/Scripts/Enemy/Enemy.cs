@@ -6,18 +6,14 @@ public class Enemy : MonoBehaviour
 {
     [SerializeField] float health;
     [SerializeField] Transform target;
-    [SerializeField] float gravity;
-
-    CharacterController controller;
-
-    Vector3 velocity;
+   
     NavMeshAgent agent;
 
     public NavMeshAgent GetAgent { get => agent; }
 
     private void Awake()
     {
-        controller = GetComponent<CharacterController>();
+
         agent = GetComponent<NavMeshAgent>();
     }
 
@@ -25,7 +21,7 @@ public class Enemy : MonoBehaviour
     {
         agent.SetDestination(target.position);
         //Gravity();
-        Debug.Log(agent.velocity.normalized.magnitude);
+        Debug.Log(agent.velocity.magnitude / agent.desiredVelocity.magnitude);
     
     }
 

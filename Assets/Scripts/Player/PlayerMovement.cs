@@ -10,7 +10,9 @@ public class PlayerMovement : MonoBehaviour
     Transform gfxTransform;
     [SerializeField]
     float gravity = -9.81f;
-
+    [SerializeField]
+    float smoothRotValue;
+    public Vector3 direction { get; private set; }
     Vector3 velocity;    
     CharacterController controller;
     Camera cam;
@@ -29,51 +31,24 @@ public class PlayerMovement : MonoBehaviour
 
     private void Move()
     {
-        Vector3 targetVector = new Vector3();
+        direction =  InputHandler._instance._inputVector.ToIso();
 
-        if(InputHandler._instance._inputVector.x > 0)
-        {
-            targetVector = transform.right;
-        }
+        if (direction.magnitude <= 0)
+            return;
 
-        if (InputHandler._instance._inputVector.x < 0)
-        {
-            targetVector = -transform.right;
-        }
-
-        if (InputHandler._instance._inputVector.y > 0)
-        {
-            targetVector = transform.forward;
-        }
-
-        if (InputHandler._instance._inputVector.y < 0)
-        {
-            targetVector = -transform.forward;
-        }
-        if (InputHandler._instance._inputVector.x == 0 &&  InputHandler._instance._inputVector.y == 0)
-        {
-            targetVector = Vector3.zero;
-        }
-
-        controller.Move(targetVector * movementSpeed * Time.deltaTime);
+        controller.Move(direction * movementSpeed * Time.deltaTime);
+        
     }
 
     private void Rotate()
     {
-        Ray ray = cam.ScreenPointToRay(InputHandler._instance._mousePosition);
+        if (direction.magnitude <= 0)
+            return;
 
-        if(Physics.Raycast(ray,out RaycastHit hitInfo,maxDistance:500f))
-        {
-            var target = hitInfo.point;
-            target.y = transform.position.y;
+        Quaternion rotation = Quaternion.LookRotation(direction);
 
-            if(Vector3.Distance(transform.position, target) > 1f)
-                transform.LookAt(target);
-
-            //gfxTransform.eulerAngles = new Vector3(gfxTransform.eulerAngles.x, (Mathf.Round(gfxTransform.eulerAngles.y / angleClamp) * angleClamp), gfxTransform.eulerAngles.z);
-
-        }
-
+        transform.rotation = Quaternion.Slerp(transform.rotation,rotation, Time.deltaTime * smoothRotValue);
+      
     }
 
     void Gravity()

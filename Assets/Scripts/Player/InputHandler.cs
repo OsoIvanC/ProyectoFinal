@@ -8,7 +8,7 @@ public class InputHandler : MonoBehaviour
 
     public PlayerActions actions { get; private set; }
 
-    public Vector2 _inputVector { get; private set; }
+    public Vector3 _inputVector { get; private set; }
     public bool _isShooting { get; private set; }
 
     public Vector2 _mousePosition { get; private set; }
@@ -19,7 +19,7 @@ public class InputHandler : MonoBehaviour
 
         actions = new PlayerActions();
         //WALK ACTION
-        actions.Movement.WALK.performed += ctx => _inputVector = ctx.ReadValue<Vector2>();
+        actions.Movement.WALK.performed += ctx => _inputVector = new Vector3(ctx.ReadValue<Vector2>().x,0,ctx.ReadValue<Vector2>().y);
         actions.Movement.WALK.canceled += _ => _inputVector = Vector2.zero;
 
         //SHOOT ACTION
