@@ -15,7 +15,7 @@ public class EnemyAnimationControlle : MonoBehaviour
 
     private void Update()
     {
-        animator.SetFloat("Speed", enemy.GetAgent.velocity.magnitude / enemy.GetAgent.desiredVelocity.magnitude);
+        animator.SetFloat("Speed",enemy.GetAgent.velocity.normalized.magnitude);
     }
 
   

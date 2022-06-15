@@ -20,9 +20,6 @@ public class Enemy : MonoBehaviour
     private void Update()
     {
         agent.SetDestination(target.position);
-        //Gravity();
-        Debug.Log(agent.velocity.magnitude / agent.desiredVelocity.magnitude);
-    
     }
 
     public void TakeDamage(float value)
