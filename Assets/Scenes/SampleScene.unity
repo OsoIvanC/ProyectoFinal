@@ -5353,6 +5353,7 @@ GameObject:
   - component: {fileID: 1103175005}
   - component: {fileID: 1103175008}
   - component: {fileID: 1103175007}
+  - component: {fileID: 1103175009}
   m_Layer: 7
   m_Name: Player
   m_TagString: Player
@@ -5406,7 +5407,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a53b0f4f2a88244ab0a1204a49e6c20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementSpeed: 5
+  movementSpeed: 5.5
   gfxTransform: {fileID: 568671668}
   gravity: -9.81
   smoothRotValue: 25
@@ -5422,6 +5423,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa980f62dae525b44be715b9fa93fcaf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1103175009
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1103175004}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce66fbeecd4f3d0449ee31510c85c497, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 568671669}
+  canAttack: 0
 --- !u!43 &1106574387
 Mesh:
   m_ObjectHideFlags: 0
@@ -11166,13 +11181,14 @@ GameObject:
   m_Component:
   - component: {fileID: 1947900201}
   - component: {fileID: 1947900202}
+  - component: {fileID: 1947900203}
   m_Layer: 7
   m_Name: Gun
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1947900201
 Transform:
   m_ObjectHideFlags: 0
@@ -11198,7 +11214,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1947900200}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5abd1cfb1cf0d744d88a9bd7b0065994, type: 3}
   m_Name: 
@@ -11208,7 +11224,24 @@ MonoBehaviour:
   barrelPos: {fileID: 0}
   mask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 2147483647
+--- !u!114 &1947900203
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1947900200}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea26f6b9d03c4e445af6bdfe6a5236b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bulletDamage: 2
+  barrelPos: {fileID: 0}
+  fireRate: 1
+  maxAmmo: 30
+  reloadTime: 2
 --- !u!1 &1983089607
 GameObject:
   m_ObjectHideFlags: 0

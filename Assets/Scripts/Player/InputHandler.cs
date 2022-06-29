@@ -22,16 +22,16 @@ public class InputHandler : MonoBehaviour
         actions.Movement.WALK.performed += ctx => _inputVector = new Vector3(ctx.ReadValue<Vector2>().x,0,ctx.ReadValue<Vector2>().y);
         actions.Movement.WALK.canceled += _ => _inputVector = Vector2.zero;
 
+
+        //LOOK ACTION
+        actions.Movement.LOOK.performed += ctx => { _mousePosition = ctx.ReadValue<Vector2>(); };
+
         //SHOOT ACTION
         //actions.Interactions.Shoot.performed += ctx => _isShooting = ctx.ReadValue<bool>();
         //actions.Interactions.Shoot.canceled += _ => _isShooting = false;
 
     }
 
-    private void Update()
-    {
-        _mousePosition = actions.Movement.LOOK.ReadValue<Vector2>();
-    }
     private void OnEnable()
     {
         actions.Interactions.Enable();

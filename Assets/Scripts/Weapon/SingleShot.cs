@@ -32,7 +32,7 @@ public class SingleShot : Weapon,IGun
 
         if(Physics.Raycast(barrelPos.position,barrelPos.forward,out hit))
         {
-            Debug.DrawRay(barrelPos.position, barrelPos.forward * hit.distance, Color.red);
+            
             Debug.Log(hit.collider.name);
 
             if(hit.collider.CompareTag("Enemy"))
@@ -40,5 +40,10 @@ public class SingleShot : Weapon,IGun
                 hit.collider.GetComponent<Enemy>().TakeDamage(damage);
             }
         }
+    }
+
+    private void Update()
+    {
+        Debug.DrawRay(barrelPos.position, barrelPos.forward * 10f, Color.red);
     }
 }

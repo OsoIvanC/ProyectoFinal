@@ -6,6 +6,7 @@ public class AnimationController : MonoBehaviour
 {
     Animator animator;
     PlayerMovement movement;
+    
 
     private void Awake()
     {
@@ -15,7 +16,14 @@ public class AnimationController : MonoBehaviour
 
     private void Update()
     {
-        animator.SetFloat("X", movement.direction.magnitude);
+        var direction = InputHandler._instance._inputVector.ToIso();
+
+     
+        direction = transform.InverseTransformDirection(direction);
+
+        direction.Normalize();
+        animator.SetFloat("X", direction.x,0.05f,Time.deltaTime);
+        animator.SetFloat("Z", direction.z,0.05f,Time.deltaTime);
     }
 
     
