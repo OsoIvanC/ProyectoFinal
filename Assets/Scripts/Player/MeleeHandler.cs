@@ -11,13 +11,22 @@ public class MeleeHandler : MonoBehaviour
     [SerializeField]
     bool canAttack;
 
+    [SerializeField]
+    float attackRadius;
+    [SerializeField]
+    LayerMask mask;
+    [SerializeField]
+    float damage;
+    [SerializeField]
+    Transform attackPoint;
+
     private void Start()
     {
         canAttack = true;
         InputHandler._instance.actions.Interactions.Attack.performed += _ => Attack();
     }
 
-    void Attack()
+    public void Attack()
     {
         if (!canAttack)
             return;
@@ -28,13 +37,19 @@ public class MeleeHandler : MonoBehaviour
     IEnumerator AttackC()
     {
         canAttack = false;
-        animator.SetLayerWeight(1, 1);
-
-
+        animator.SetTrigger("Punch");
         yield return new WaitForSeconds(0.867f);
-
-        animator.SetLayerWeight(1, 0);
         canAttack = true;
+    }
+
+    public void PlayerAttack()
+    {
+        Collider[] targets = Physics.OverlapSphere(attackPoint.position, attackRadius, mask);
+
+        if (targets.Length <= 0)
+            return;
+
+        targets[0].GetComponent<Enemy>().TakeDamage(damage);
     }
 
 }

@@ -27,8 +27,8 @@ public class PlayerMovement : MonoBehaviour
     private void Update()
     {
         Move();
-        //Rotate();
-        MouseRotation();
+        Rotate();
+        //MouseRotation();
         Gravity();
     }
 

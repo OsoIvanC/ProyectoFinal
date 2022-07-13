@@ -19,7 +19,7 @@ public class InputHandler : MonoBehaviour
 
         actions = new PlayerActions();
         //WALK ACTION
-        actions.Movement.WALK.performed += ctx => _inputVector = new Vector3(ctx.ReadValue<Vector2>().x,0,ctx.ReadValue<Vector2>().y);
+        actions.Movement.WALK.performed += ctx => _inputVector = new Vector3(ctx.ReadValue<Vector2>().x,0,ctx.ReadValue<Vector2>().y).normalized;
         actions.Movement.WALK.canceled += _ => _inputVector = Vector2.zero;
 
 
