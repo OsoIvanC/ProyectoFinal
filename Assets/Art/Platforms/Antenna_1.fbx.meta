@@ -1,9 +1,14 @@
 fileFormatVersion: 2
 guid: aec771afae152db42b7ae97f299d7388
 ModelImporter:
-  serializedVersion: 21202
+  serializedVersion: 21300
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: MetalLight
+    second: {fileID: 2100000, guid: 3776d96be3c3a3e4b9aa4639bbb175cf, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -99,6 +104,7 @@ ModelImporter:
   humanoidOversampling: 1
   avatarSetup: 0
   addHumanoidExtraRootOnlyWhenUsingAvatar: 1
+  remapMaterialsIfMaterialImportModeIsNone: 1
   additionalBone: 0
   userData: 
   assetBundleName: 

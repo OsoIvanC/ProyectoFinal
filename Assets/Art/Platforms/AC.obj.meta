@@ -1,24 +1,24 @@
 fileFormatVersion: 2
 guid: b143d245e0f218e4d84ba7644edb7b19
 ModelImporter:
-  serializedVersion: 21202
+  serializedVersion: 21300
   internalIDToNameTable: []
   externalObjects:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Black
-    second: {fileID: -1580535799172915004, guid: 866b94130973ee44fb9f8e620ade9402, type: 3}
+    second: {fileID: 2100000, guid: bcfc7b99e7c89d641ba20d2f67d1f9f5, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Grey
-    second: {fileID: -5243988174349660497, guid: 906546dbf50f804408b2e94818d8719f, type: 3}
+    second: {fileID: 2100000, guid: 956bcdac1bda60b49b15566e9d43f739, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: LightGrey
-    second: {fileID: -1242230322862417841, guid: ca54cc574b7379845b6efb2aae123968, type: 3}
+    second: {fileID: 2100000, guid: 3f3c3281f1ffe84419752ca9419fa155, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -119,6 +119,7 @@ ModelImporter:
   humanoidOversampling: 1
   avatarSetup: 0
   addHumanoidExtraRootOnlyWhenUsingAvatar: 1
+  remapMaterialsIfMaterialImportModeIsNone: 1
   additionalBone: 0
   userData: 
   assetBundleName: 

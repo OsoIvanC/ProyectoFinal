@@ -1,9 +1,14 @@
 fileFormatVersion: 2
 guid: 6b960d44129c9ab4ba8f694fb3349d4d
 ModelImporter:
-  serializedVersion: 21202
+  serializedVersion: 21300
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Orange
+    second: {fileID: 2100000, guid: adb427f06ff9aea41bb888bfd3da2b0c, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -99,6 +104,7 @@ ModelImporter:
   humanoidOversampling: 1
   avatarSetup: 0
   addHumanoidExtraRootOnlyWhenUsingAvatar: 1
+  remapMaterialsIfMaterialImportModeIsNone: 1
   additionalBone: 0
   userData: 
   assetBundleName: 
