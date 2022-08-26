@@ -165,33 +165,6 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
-                },
-                {
-                    "name": "Melee",
-                    "type": "Value",
-                    "id": "eca764ff-ac41-4e2b-8453-0d437eb18dba",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": true
-                },
-                {
-                    "name": "SingleShot",
-                    "type": "Value",
-                    "id": "0fa2c6c3-f26d-4e45-abb2-45c9ea4d8b65",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": true
-                },
-                {
-                    "name": "Automatic",
-                    "type": "Value",
-                    "id": "097ef72a-0571-426a-a3fa-e5a3299eccd8",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -214,39 +187,6 @@
                     "processors": "",
                     "groups": "Player",
                     "action": "Interact",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "71328b03-2295-4887-83a2-57c973b94a7d",
-                    "path": "<Keyboard>/1",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Melee",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "4161f221-c297-401b-ac64-4b27d61ca989",
-                    "path": "<Keyboard>/1",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "SingleShot",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "f2d85650-5fa5-4fe7-9230-6db70bd0bbea",
-                    "path": "<Keyboard>/1",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Automatic",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

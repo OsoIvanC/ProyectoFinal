@@ -4,43 +4,23 @@ using UnityEngine;
 
 public class WeaponManager : MonoBehaviour
 {
-
     [SerializeField] List<Weapon> weapons;
-
-    Weapon activeWeapon;
-
-    int activeIndex;
-
-    bool isActive;
-
-    private void Awake()
+    //[SerializeField] Weapon activeWeapon;
+    public List<Weapon> Weapons { get { return weapons; } protected set { weapons = value; } }
+    
+    public Weapon GetActiveWeapon()
     {
-        activeIndex = 0;
-        activeWeapon = weapons[0];
-        activeIndex = weapons.LastIndexOf(activeWeapon);
-        
-        InputHandler._instance.actions.Interactions.Melee.performed += _ => activeIndex = 0;
-        InputHandler._instance.actions.Interactions.SingleShot.performed += _ => activeIndex = 1;
-        InputHandler._instance.actions.Interactions.Automatic.performed += _ => activeIndex = 2;
-    }
+        Weapon active = null;
 
-    void ChangeWeapon(int index)
-    {
-        if (activeWeapon == weapons[index])
-            return;
-
-        activeWeapon = weapons[index];
-        activeIndex = weapons.LastIndexOf(activeWeapon);
-    }
-
-    void ActivateWeapon()
-    {
-        for (int i = 0; i < weapons.Count; i++)
+        foreach (Weapon weapon in weapons)
         {
-            if(i == activeIndex)
+            if(weapon.gameObject.activeSelf)
             {
-                
+                active = weapon;
+                break;
             }
         }
+        return active;
     }
+
 }
