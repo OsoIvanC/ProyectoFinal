@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
+using DG.Tweening;
 
 public class EnemyController : MonoBehaviour,IController
 {
@@ -12,11 +14,55 @@ public class EnemyController : MonoBehaviour,IController
     [SerializeField]
     Color actualColor;
 
+
+    [SerializeField]
+    bool isStatic;
+    //public bool IsStatic { get { return isStatic; } set { isStatic = value; } }
+
+    [SerializeField]
+    float pathTravelTime;
+
+    [SerializeField]
+    Transform[] wayPoints;
+
+    [SerializeField]
+    Transform targetToRotate;
+
+
+    Vector3[] wp;
+
+    //public List<Transform> WayPoints { get { return wayPoints; }  }
+
+
     private void Awake()
     {
-        myRenderer = GetComponent<Renderer>();
-        actualColor = myRenderer.material.color;
+        myRenderer = TryGetComponent<Renderer>(out Renderer r) ? r : null;
+
+        if(myRenderer!= null)
+            actualColor = myRenderer.material.color;
+       
         myStats.Init();
+        
+        wp = new Vector3[wayPoints.Length];
+
+        if(!isStatic)
+        {
+            for (int i = 0; i < wayPoints.Length; i++)
+            {
+                wp[i] = wayPoints[i].position;
+            }
+        }
+    
+    }
+
+    private void Start()
+    {
+        Move();
+    }
+    private void Update()
+    {
+       
+        Rotate();            
     }
     public void Attack()
     {
@@ -35,12 +81,20 @@ public class EnemyController : MonoBehaviour,IController
 
     public void Move()
     {
-        throw new System.NotImplementedException();
+        if (isStatic)
+            return;
+
+        transform.DOPath(wp, pathTravelTime, PathType.CatmullRom, PathMode.Full3D, 30, Color.red).SetLoops(-1,LoopType.Yoyo);
+
     }
 
     public void Rotate()
     {
-        throw new System.NotImplementedException();
+        if (targetToRotate == null)
+            return;
+
+        transform.LookAt(targetToRotate);
+
     }
 
     public void Shoot()
@@ -60,7 +114,9 @@ public class EnemyController : MonoBehaviour,IController
         yield return new WaitForSeconds(0.1f);
         myRenderer.material.color = actualColor;
     }
-    
+
 
     
 }
+
+

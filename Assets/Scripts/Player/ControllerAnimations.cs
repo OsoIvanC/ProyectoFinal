@@ -12,13 +12,11 @@ public class ControllerAnimations : MonoBehaviour
 
     Controller controller;
 
-    List<Collider> weaponCollider;
-
     [SerializeField]
     Collider activeCollider;
 
     [SerializeField]
-    WeaponManager weaponManager;
+    Inventory inventory;
 
 
     private void Awake()
@@ -41,7 +39,7 @@ public class ControllerAnimations : MonoBehaviour
     
     public void ActivateCollider()
     {
-        activeCollider = weaponManager.GetActiveWeapon().GetComponent<Collider>();
+        activeCollider = inventory.ActiveWeapon.GetComponent<Collider>();
 
         if (activeCollider != null && !activeCollider.enabled)
             activeCollider.enabled = true;

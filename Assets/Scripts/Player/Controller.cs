@@ -26,6 +26,8 @@ public struct Stats
     float gravity;
     [SerializeField]
     bool canAttack ;
+    [SerializeField]
+    bool canRoll;
    
     public float MaxHealth { get { return maxHealth; } }
     public float Health { get { return health; } set { health = value; } }
@@ -35,12 +37,14 @@ public struct Stats
     public float SmoothRotValue { get { return smoothRotValue; } }
     public float Gravity { get { return gravity; } }
     public bool CanAttack {get { return canAttack; } set { canAttack = value; } }
+    public bool CanRoll { get { return canRoll; } set { canRoll = value; } }
     
 
     public void Init()
     {
         this.health = this.maxHealth;
         this.canAttack = true;
+        this.canRoll = true;
     }
 
   
@@ -70,7 +74,21 @@ public class Controller : MonoBehaviour, IController
     ControllerAnimations animations;
 
     [SerializeField]
-    AnimationClip attackAnim; 
+    AnimationClip attackAnim;
+
+    [SerializeField]
+    float rollDistance;
+
+    bool isRolling;
+
+    Vector3 initCenterCollider;
+    float initHeight;
+
+    [SerializeField]
+    Vector3 newCenterCollider;
+
+    [SerializeField]
+    float newHeight;
 
     void Awake()
     {
@@ -89,6 +107,13 @@ public class Controller : MonoBehaviour, IController
 
         //ATTACK INPUT
         _inputActions.Interactions.Attack.started += _ => Attack();
+
+        //DASH INPUT
+        _inputActions.Movement.DASH.performed += _ => RollAnim();
+
+
+        initCenterCollider = controller.center;
+        initHeight = controller.height; 
     
     }
 
@@ -99,7 +124,10 @@ public class Controller : MonoBehaviour, IController
         Move();
         Gravity();
         Rotate();
+        RollAction();
     
+
+          Debug.DrawRay(transform.position + Vector3.up, transform.forward, Color.red);
     }
 
     private void OnEnable()
@@ -150,18 +178,61 @@ public class Controller : MonoBehaviour, IController
 
         animations.GetAnimator.SetFloat("SpeedMultiplier", _inputVector.magnitude <= 0 ? 1f : 0.90f);
 
-        if (_inputVector.magnitude <= 0) return;
+        if (_inputVector.magnitude <= 0)
+        {
+            myStats.CanRoll = false;
+            return;
+        }
+
+        myStats.CanRoll = true;
+
+        if (isRolling) return;
+
         _inputVector.Normalize();
 
         controller.Move(_inputVector.ToIso() * myStats.MovementSpeed * Time.deltaTime);
 
     }
 
-    public void Roll()
+    public void RollAnim()
     {
-
+        Debug.Log("Roll Start");
+        if (!myStats.CanRoll)
+            return;
+        
+       StartCoroutine(RollCounter());
     }
 
+    void RollAction()
+    {
+        if (!isRolling)
+            return;
+
+
+        //Debug.Log(transform.forward * rollDistance * Time.deltaTime);
+
+        controller.Move(transform.forward * rollDistance * Time.deltaTime);
+    }
+
+
+    IEnumerator RollCounter()
+    {
+        myStats.CanRoll = false;
+        isRolling = true;
+        
+        animations.PlayAnimTrigger("Roll");
+        
+        controller.center = newCenterCollider;
+        controller.height = newHeight;
+        
+        yield return new WaitForSeconds(1.33f/2f);
+
+        controller.center = initCenterCollider;
+        controller.height = initHeight;
+
+        myStats.CanRoll = true;
+        isRolling = false;
+    }
     public void Rotate()
     {
 

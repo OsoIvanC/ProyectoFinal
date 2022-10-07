@@ -8,7 +8,9 @@ public class Weapon : MonoBehaviour
 
     [SerializeField] GameObject WeaponGFX;
     Collider _collider;
-    
+
+    [SerializeField]
+    bool _isMelee;
 
     private void Awake()
     {
