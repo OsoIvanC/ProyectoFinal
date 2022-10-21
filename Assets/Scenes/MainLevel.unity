@@ -4440,7 +4440,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   m_LocalRotation: {x: 0.23911765, y: 0.3696438, z: -0.09904577, w: 0.89239913}
-  m_LocalPosition: {x: -30.289467, y: 26.744572, z: -30.47048}
+  m_LocalPosition: {x: -30.289473, y: 26.744572, z: -30.470474}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -9221,8 +9221,12 @@ MonoBehaviour:
     smoothRotValue: 540
     gravity: -9.81
     canAttack: 0
+    canRoll: 0
   attackAnimTime: 0.5
   attackAnim: {fileID: 7400000, guid: 79010311d26a137458f2be889a7fa7d8, type: 2}
+  rollDistance: 0
+  newCenterCollider: {x: 0, y: 0, z: 0}
+  newHeight: 0
 --- !u!114 &1602889181
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9356,7 +9360,13 @@ MonoBehaviour:
     smoothRotValue: 0
     gravity: 0
     canAttack: 0
+    canRoll: 0
   actualColor: {r: 0, g: 0, b: 0, a: 0}
+  isStatic: 0
+  pathTravelTime: 0
+  wayPoints: []
+  targetToRotate: {fileID: 0}
+  timeToActivate: 0
 --- !u!54 &1621396685
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -9367,7 +9377,7 @@ Rigidbody:
   serializedVersion: 2
   m_Mass: 1
   m_Drag: 0
-  m_AngularDrag: 0.05
+  m_AngularDrag: 0
   m_UseGravity: 0
   m_IsKinematic: 1
   m_Interpolate: 0
@@ -10508,7 +10518,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 1.777728, y: 1}
+    m_SensorSize: {x: 1.7776241, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -10525,7 +10535,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1986219230}
   m_LocalRotation: {x: 0.23911765, y: 0.3696438, z: -0.09904577, w: 0.89239913}
-  m_LocalPosition: {x: -30.289467, y: 26.744572, z: -30.47048}
+  m_LocalPosition: {x: -30.289473, y: 26.744572, z: -30.470474}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

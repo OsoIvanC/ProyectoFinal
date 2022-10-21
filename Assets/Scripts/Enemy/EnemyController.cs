@@ -31,8 +31,20 @@ public class EnemyController : MonoBehaviour,IController
 
     Vector3[] wp;
 
+    public float timeToActivate;
+
     //public List<Transform> WayPoints { get { return wayPoints; }  }
 
+    private void OnDisable()
+    {
+        //StartCoroutine(Enable()); 
+    }
+    
+    IEnumerator Enable()
+    {
+        yield return new WaitForSecondsRealtime(timeToActivate);
+        this.gameObject.SetActive(true);
+    }
 
     private void Awake()
     {
@@ -53,6 +65,11 @@ public class EnemyController : MonoBehaviour,IController
             }
         }
     
+    }
+
+    private void OnEnable()
+    {
+        //TakeDamage();
     }
 
     private void Start()
@@ -102,17 +119,30 @@ public class EnemyController : MonoBehaviour,IController
         throw new System.NotImplementedException();
     }
 
-    public void TakeDamage(float value)
+    public void TakeDamage(float value = 0)
     {
-        StartCoroutine(ColorChange());
+        this.gameObject.SetActive(false);
+        GameController.instance.ActivateEnemy(this.gameObject);
+
+        //StartCoroutine(Disable());
+
+        // this.gameObject.SetActive(false);
+        //StartCoroutine(ColorChange());
     }
 
 
+    IEnumerator Disable()
+    {
+        yield return new WaitForSeconds(1);
+        
+    }
+    
     IEnumerator ColorChange()
     {
         myRenderer.material.color =  Color.red;
         yield return new WaitForSeconds(0.1f);
         myRenderer.material.color = actualColor;
+        this.gameObject.SetActive(false);
     }
 
 

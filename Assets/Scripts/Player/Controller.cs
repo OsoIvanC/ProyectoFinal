@@ -184,10 +184,11 @@ public class Controller : MonoBehaviour, IController
             return;
         }
 
-        myStats.CanRoll = true;
 
         if (isRolling) return;
 
+        myStats.CanRoll = true;
+        
         _inputVector.Normalize();
 
         controller.Move(_inputVector.ToIso() * myStats.MovementSpeed * Time.deltaTime);
@@ -199,8 +200,9 @@ public class Controller : MonoBehaviour, IController
         Debug.Log("Roll Start");
         if (!myStats.CanRoll)
             return;
-        
-       StartCoroutine(RollCounter());
+
+        myStats.CanRoll = false;
+        StartCoroutine(RollCounter());
     }
 
     void RollAction()
