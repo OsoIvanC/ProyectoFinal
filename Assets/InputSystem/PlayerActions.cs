@@ -187,6 +187,24 @@ public partial class @PlayerActions : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Melee"",
+                    ""type"": ""Button"",
+                    ""id"": ""0c78ca55-fb85-4701-9b76-a075e830809e"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Range"",
+                    ""type"": ""Button"",
+                    ""id"": ""75285c37-a8f4-43dc-ba8b-ef480d02104a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -211,6 +229,28 @@ public partial class @PlayerActions : IInputActionCollection2, IDisposable
                     ""action"": ""Interact"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d2c3e873-e006-4145-ba5d-a3cb988cbca3"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Melee"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3b71dd94-9128-419a-97e8-5fd5b2f52040"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Range"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -233,6 +273,8 @@ public partial class @PlayerActions : IInputActionCollection2, IDisposable
         m_Interactions = asset.FindActionMap("Interactions", throwIfNotFound: true);
         m_Interactions_Attack = m_Interactions.FindAction("Attack", throwIfNotFound: true);
         m_Interactions_Interact = m_Interactions.FindAction("Interact", throwIfNotFound: true);
+        m_Interactions_Melee = m_Interactions.FindAction("Melee", throwIfNotFound: true);
+        m_Interactions_Range = m_Interactions.FindAction("Range", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -351,12 +393,16 @@ public partial class @PlayerActions : IInputActionCollection2, IDisposable
     private IInteractionsActions m_InteractionsActionsCallbackInterface;
     private readonly InputAction m_Interactions_Attack;
     private readonly InputAction m_Interactions_Interact;
+    private readonly InputAction m_Interactions_Melee;
+    private readonly InputAction m_Interactions_Range;
     public struct InteractionsActions
     {
         private @PlayerActions m_Wrapper;
         public InteractionsActions(@PlayerActions wrapper) { m_Wrapper = wrapper; }
         public InputAction @Attack => m_Wrapper.m_Interactions_Attack;
         public InputAction @Interact => m_Wrapper.m_Interactions_Interact;
+        public InputAction @Melee => m_Wrapper.m_Interactions_Melee;
+        public InputAction @Range => m_Wrapper.m_Interactions_Range;
         public InputActionMap Get() { return m_Wrapper.m_Interactions; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -372,6 +418,12 @@ public partial class @PlayerActions : IInputActionCollection2, IDisposable
                 @Interact.started -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnInteract;
                 @Interact.performed -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnInteract;
                 @Interact.canceled -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnInteract;
+                @Melee.started -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnMelee;
+                @Melee.performed -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnMelee;
+                @Melee.canceled -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnMelee;
+                @Range.started -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnRange;
+                @Range.performed -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnRange;
+                @Range.canceled -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnRange;
             }
             m_Wrapper.m_InteractionsActionsCallbackInterface = instance;
             if (instance != null)
@@ -382,6 +434,12 @@ public partial class @PlayerActions : IInputActionCollection2, IDisposable
                 @Interact.started += instance.OnInteract;
                 @Interact.performed += instance.OnInteract;
                 @Interact.canceled += instance.OnInteract;
+                @Melee.started += instance.OnMelee;
+                @Melee.performed += instance.OnMelee;
+                @Melee.canceled += instance.OnMelee;
+                @Range.started += instance.OnRange;
+                @Range.performed += instance.OnRange;
+                @Range.canceled += instance.OnRange;
             }
         }
     }
@@ -406,5 +464,7 @@ public partial class @PlayerActions : IInputActionCollection2, IDisposable
     {
         void OnAttack(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
+        void OnMelee(InputAction.CallbackContext context);
+        void OnRange(InputAction.CallbackContext context);
     }
 }

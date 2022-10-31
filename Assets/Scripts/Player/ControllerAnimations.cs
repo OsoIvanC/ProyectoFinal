@@ -44,6 +44,11 @@ public class ControllerAnimations : MonoBehaviour
         if (activeCollider != null && !activeCollider.enabled)
             activeCollider.enabled = true;
     }
+
+    public void ChangeAnimLayer(int layer, int value)
+    {
+        animator.SetLayerWeight(layer, value);
+    }
     public void DeactivateCollider()
     {
         if (activeCollider != null && activeCollider.enabled)

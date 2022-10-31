@@ -90,6 +90,13 @@ public class Controller : MonoBehaviour, IController
     [SerializeField]
     float newHeight;
 
+
+    [Header("Armas")]
+    [SerializeField]
+        Weapon Melee;
+    [SerializeField]
+        Weapon Range;
+
     void Awake()
     {
 
@@ -110,6 +117,11 @@ public class Controller : MonoBehaviour, IController
 
         //DASH INPUT
         _inputActions.Movement.DASH.performed += _ => RollAnim();
+
+
+        //WEAPON CHANGE
+        _inputActions.Interactions.Melee.performed += _ => WeaponManager.instance.ChangeWeapon(Melee);
+        _inputActions.Interactions.Range.performed += _ => WeaponManager.instance.ChangeWeapon(Range);
 
 
         initCenterCollider = controller.center;
