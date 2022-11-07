@@ -157,15 +157,16 @@ public class Controller : MonoBehaviour, IController
         Debug.Log("AttackInit");
         if (!myStats.CanAttack) return;
 
-        StartCoroutine(IAttack());
-    }
-
-    IEnumerator IAttack()
-    {
         myStats.CanAttack = false;
         animations.PlayAnimTrigger("Attack");
-        yield return new WaitForSecondsRealtime(attackAnimTime);
+        //StartCoroutine(IAttack());
+    }
+
+    public void AttackReset()
+    {
         myStats.CanAttack = true;
+
+        Debug.Log("CAN ATTACK");
     }
     public void Death()
     {
@@ -214,7 +215,14 @@ public class Controller : MonoBehaviour, IController
             return;
 
         myStats.CanRoll = false;
-        StartCoroutine(RollCounter());
+        isRolling = true;
+
+        animations.PlayAnimTrigger("Roll");
+        //controller.Move(transform.forward * rollDistance * Time.deltaTime);
+        controller.center = newCenterCollider;
+        controller.height = newHeight;
+
+        //StartCoroutine(RollCounter());
     }
 
     void RollAction()
@@ -229,24 +237,7 @@ public class Controller : MonoBehaviour, IController
     }
 
 
-    IEnumerator RollCounter()
-    {
-        myStats.CanRoll = false;
-        isRolling = true;
-        
-        animations.PlayAnimTrigger("Roll");
-        
-        controller.center = newCenterCollider;
-        controller.height = newHeight;
-        
-        yield return new WaitForSeconds(1.33f/2f);
-
-        controller.center = initCenterCollider;
-        controller.height = initHeight;
-
-        myStats.CanRoll = true;
-        isRolling = false;
-    }
+    
     public void Rotate()
     {
 
@@ -258,6 +249,14 @@ public class Controller : MonoBehaviour, IController
         transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * myStats.SmoothRotValue);
     }
 
+    public void RollReset()
+    {
+        controller.center = initCenterCollider;
+        controller.height = initHeight;
+
+        myStats.CanRoll = true;
+        isRolling = false;
+    }
     public void Shoot()
     {
         throw new System.NotImplementedException();

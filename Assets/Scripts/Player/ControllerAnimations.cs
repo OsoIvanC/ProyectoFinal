@@ -57,4 +57,15 @@ public class ControllerAnimations : MonoBehaviour
         activeCollider = null;
     }
 
+    public void ResetAttack()
+    {
+        controller.AttackReset();
+    }
+
+    public void ResetRoll()
+    {
+        controller.RollReset();
+    }
+
+
 }
