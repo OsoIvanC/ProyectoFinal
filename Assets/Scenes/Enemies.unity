@@ -45479,7 +45479,7 @@ MonoBehaviour:
     canRoll: 0
   attackAnimTime: 0.5
   attackAnim: {fileID: 7400000, guid: 79010311d26a137458f2be889a7fa7d8, type: 2}
-  rollDistance: 6
+  rollDistance: 4
   newCenterCollider: {x: 0, y: 0.4, z: 0}
   newHeight: 0.75
   Melee: {fileID: 8373101764783145620}
