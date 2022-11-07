@@ -5,7 +5,8 @@ using DG.Tweening;
 
 public class Bullet : MonoBehaviour
 {
-    
+    public Vector3 direction;
+
     private void OnEnable()
     {
         transform.DOMove(GunManager.instance.GetShootDir() * GunManager.instance.bulletVelocity,1).SetEase(Ease.Flash);

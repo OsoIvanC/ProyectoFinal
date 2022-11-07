@@ -67,5 +67,9 @@ public class ControllerAnimations : MonoBehaviour
         controller.RollReset();
     }
 
+    public void Shoot()
+    {
+        controller.Shoot();
+    }
 
 }

@@ -263,7 +263,14 @@ public class Controller : MonoBehaviour, IController
     }
     public void Shoot()
     {
-        throw new System.NotImplementedException();
+        GameObject bullet = GunManager.instance.GetPooledBullet();
+
+        if(bullet != null)
+        {
+            bullet.transform.position = GunManager.instance.barrelPos.position;
+            bullet.transform.rotation = GunManager.instance.barrelPos.rotation;
+            bullet.SetActive(true);
+        }
     }
 
     public void TakeDamage(float value)
