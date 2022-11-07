@@ -155,10 +155,14 @@ public class Controller : MonoBehaviour, IController
     public void Attack()
     {
         Debug.Log("AttackInit");
+
         if (!myStats.CanAttack) return;
 
-        myStats.CanAttack = false;
+        if(isRolling) return;
+
         animations.PlayAnimTrigger("Attack");
+        
+        myStats.CanAttack = false;
         //StartCoroutine(IAttack());
     }
 
