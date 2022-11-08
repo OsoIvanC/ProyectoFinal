@@ -108,6 +108,8 @@ public class Controller : MonoBehaviour, IController
 
         animations = GetComponentInChildren<ControllerAnimations>();
 
+        isRolling = false;
+
         //MOVE INPUT
         _inputActions.Movement.WALK.performed += ctx => _inputVector = new Vector3(ctx.ReadValue<Vector2>().x, 0, ctx.ReadValue<Vector2>().y);
         _inputActions.Movement.WALK.canceled += _ => _inputVector = Vector3.zero;
@@ -155,17 +157,23 @@ public class Controller : MonoBehaviour, IController
     public void Attack()
     {
         Debug.Log("AttackInit");
+
         if (!myStats.CanAttack) return;
 
-        StartCoroutine(IAttack());
+        //if(isRolling) return;
+
+        myStats.CanAttack = false;
+        
+        animations.PlayAnimTrigger("Attack");
+        
+        //StartCoroutine(IAttack());
     }
 
-    IEnumerator IAttack()
+    public void AttackReset()
     {
-        myStats.CanAttack = false;
-        animations.PlayAnimTrigger("Attack");
-        yield return new WaitForSecondsRealtime(attackAnimTime);
         myStats.CanAttack = true;
+
+        Debug.Log("CAN ATTACK");
     }
     public void Death()
     {
@@ -214,7 +222,14 @@ public class Controller : MonoBehaviour, IController
             return;
 
         myStats.CanRoll = false;
-        StartCoroutine(RollCounter());
+        isRolling = true;
+
+        animations.PlayAnimTrigger("Roll");
+        //controller.Move(transform.forward * rollDistance * Time.deltaTime);
+        controller.center = newCenterCollider;
+        controller.height = newHeight;
+
+        //StartCoroutine(RollCounter());
     }
 
     void RollAction()
@@ -229,24 +244,7 @@ public class Controller : MonoBehaviour, IController
     }
 
 
-    IEnumerator RollCounter()
-    {
-        myStats.CanRoll = false;
-        isRolling = true;
-        
-        animations.PlayAnimTrigger("Roll");
-        
-        controller.center = newCenterCollider;
-        controller.height = newHeight;
-        
-        yield return new WaitForSeconds(1.33f/2f);
-
-        controller.center = initCenterCollider;
-        controller.height = initHeight;
-
-        myStats.CanRoll = true;
-        isRolling = false;
-    }
+    
     public void Rotate()
     {
 
@@ -258,10 +256,26 @@ public class Controller : MonoBehaviour, IController
         transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * myStats.SmoothRotValue);
     }
 
+    public void RollReset()
+    {
+        controller.center = initCenterCollider;
+        controller.height = initHeight;
+
+        myStats.CanRoll = true;
+        isRolling = false;
+    }
     public void Shoot()
     {
-        throw new System.NotImplementedException();
-    }
+        GameObject bullet = GunManager.instance.GetPooledBullet();
+
+        if(bullet == null) return;
+        
+        
+        bullet.transform.position = GunManager.instance.barrelPos.position;
+        bullet.transform.rotation = GunManager.instance.barrelPos.localRotation;
+        bullet.SetActive(true);
+        
+   }
 
     public void TakeDamage(float value)
     {
