@@ -10,8 +10,14 @@ public class Bullet : MonoBehaviour
     private void OnEnable()
     {
         transform.DOMove(GunManager.instance.GetShootDir() * GunManager.instance.bulletVelocity,1).SetEase(Ease.Flash);
+
+        Invoke("DeActive", 2);
     }
 
+    void DeActive()
+    {
+        gameObject.SetActive(false);
+    }
     private void OnCollisionEnter(Collision collision)
     {
         gameObject.SetActive(false);

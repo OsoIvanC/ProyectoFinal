@@ -108,6 +108,8 @@ public class Controller : MonoBehaviour, IController
 
         animations = GetComponentInChildren<ControllerAnimations>();
 
+        isRolling = false;
+
         //MOVE INPUT
         _inputActions.Movement.WALK.performed += ctx => _inputVector = new Vector3(ctx.ReadValue<Vector2>().x, 0, ctx.ReadValue<Vector2>().y);
         _inputActions.Movement.WALK.canceled += _ => _inputVector = Vector3.zero;
@@ -158,11 +160,12 @@ public class Controller : MonoBehaviour, IController
 
         if (!myStats.CanAttack) return;
 
-        if(isRolling) return;
+        //if(isRolling) return;
 
+        myStats.CanAttack = false;
+        
         animations.PlayAnimTrigger("Attack");
         
-        myStats.CanAttack = false;
         //StartCoroutine(IAttack());
     }
 
@@ -265,13 +268,14 @@ public class Controller : MonoBehaviour, IController
     {
         GameObject bullet = GunManager.instance.GetPooledBullet();
 
-        if(bullet != null)
-        {
-            bullet.transform.position = GunManager.instance.barrelPos.position;
-            bullet.transform.rotation = GunManager.instance.barrelPos.rotation;
-            bullet.SetActive(true);
-        }
-    }
+        if(bullet == null) return;
+        
+        
+        bullet.transform.position = GunManager.instance.barrelPos.position;
+        bullet.transform.rotation = GunManager.instance.barrelPos.localRotation;
+        bullet.SetActive(true);
+        
+   }
 
     public void TakeDamage(float value)
     {
