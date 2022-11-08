@@ -1,0 +1,91 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!319 &31900000
+AvatarMask:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: UpperMaskGun
+  m_Mask: 00000000010000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+  m_Elements:
+  - m_Path: 
+    m_Weight: 1
+  - m_Path: CharacterArmature
+    m_Weight: 0
+  - m_Path: CharacterArmature/Root
+    m_Weight: 0
+  - m_Path: CharacterArmature/Root/Body
+    m_Weight: 0
+  - m_Path: CharacterArmature/Root/Body/Hips
+    m_Weight: 0
+  - m_Path: CharacterArmature/Root/Body/Hips/Abdomen
+    m_Weight: 0
+  - m_Path: CharacterArmature/Root/Body/Hips/Abdomen/Torso
+    m_Weight: 0
+  - m_Path: CharacterArmature/Root/Body/Hips/Abdomen/Torso/Chest
+    m_Weight: 1
+  - m_Path: CharacterArmature/Root/Body/Hips/Abdomen/Torso/Chest/Neck
+    m_Weight: 0
+  - m_Path: CharacterArmature/Root/Body/Hips/Abdomen/Torso/Chest/Neck/Head
+    m_Weight: 0
+  - m_Path: CharacterArmature/Root/Body/Hips/Abdomen/Torso/Chest/Neck/Head/Head_end
+    m_Weight: 0
+  - m_Path: CharacterArmature/Root/Body/Hips/Abdomen/Torso/Chest/Shoulder.L
+    m_Weight: 0
+  - m_Path: CharacterArmature/Root/Body/Hips/Abdomen/Torso/Chest/Shoulder.L/UpperArm.L
+    m_Weight: 1
+  - m_Path: CharacterArmature/Root/Body/Hips/Abdomen/Torso/Chest/Shoulder.L/UpperArm.L/LowerArm.L
+    m_Weight: 1
+  - m_Path: CharacterArmature/Root/Body/Hips/Abdomen/Torso/Chest/Shoulder.L/UpperArm.L/LowerArm.L/Hand.L
+    m_Weight: 1
+  - m_Path: CharacterArmature/Root/Body/Hips/Abdomen/Torso/Chest/Shoulder.L/UpperArm.L/LowerArm.L/Hand.L/Hand.L_end
+    m_Weight: 1
+  - m_Path: CharacterArmature/Root/Body/Hips/Abdomen/Torso/Chest/Shoulder.R
+    m_Weight: 0
+  - m_Path: CharacterArmature/Root/Body/Hips/Abdomen/Torso/Chest/Shoulder.R/UpperArm.R
+    m_Weight: 1
+  - m_Path: CharacterArmature/Root/Body/Hips/Abdomen/Torso/Chest/Shoulder.R/UpperArm.R/LowerArm.R
+    m_Weight: 1
+  - m_Path: CharacterArmature/Root/Body/Hips/Abdomen/Torso/Chest/Shoulder.R/UpperArm.R/LowerArm.R/Hand.R
+    m_Weight: 1
+  - m_Path: CharacterArmature/Root/Body/Hips/Abdomen/Torso/Chest/Shoulder.R/UpperArm.R/LowerArm.R/Hand.R/Weapon
+    m_Weight: 1
+  - m_Path: CharacterArmature/Root/Body/Hips/Abdomen/Torso/Chest/Shoulder.R/UpperArm.R/LowerArm.R/Hand.R/Weapon/Weapon_end
+    m_Weight: 1
+  - m_Path: CharacterArmature/Root/Body/UpperLeg.L
+    m_Weight: 0
+  - m_Path: CharacterArmature/Root/Body/UpperLeg.L/LowerLeg.L
+    m_Weight: 0
+  - m_Path: CharacterArmature/Root/Body/UpperLeg.L/LowerLeg.L/LowerLeg.L_end
+    m_Weight: 0
+  - m_Path: CharacterArmature/Root/Body/UpperLeg.R
+    m_Weight: 0
+  - m_Path: CharacterArmature/Root/Body/UpperLeg.R/LowerLeg.R
+    m_Weight: 0
+  - m_Path: CharacterArmature/Root/Body/UpperLeg.R/LowerLeg.R/LowerLeg.R_end
+    m_Weight: 0
+  - m_Path: CharacterArmature/Root/Foot.L
+    m_Weight: 0
+  - m_Path: CharacterArmature/Root/Foot.L/Foot.L_end
+    m_Weight: 0
+  - m_Path: CharacterArmature/Root/Foot.R
+    m_Weight: 0
+  - m_Path: CharacterArmature/Root/Foot.R/Foot.R_end
+    m_Weight: 0
+  - m_Path: CharacterArmature/Root/PT.L
+    m_Weight: 0
+  - m_Path: CharacterArmature/Root/PT.L/PT.L_end
+    m_Weight: 0
+  - m_Path: CharacterArmature/Root/PT.R
+    m_Weight: 0
+  - m_Path: CharacterArmature/Root/PT.R/PT.R_end
+    m_Weight: 0
+  - m_Path: Cube.000
+    m_Weight: 1
+  - m_Path: Cube.007
+    m_Weight: 1
+  - m_Path: Cube.009
+    m_Weight: 1
+  - m_Path: Sword
+    m_Weight: 1
