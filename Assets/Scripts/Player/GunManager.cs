@@ -8,7 +8,7 @@ public class GunManager : MonoBehaviour
 
     public float bulletVelocity;
 
-    public List<GameObject> pooledBullets = new List<GameObject>();
+    public Queue<GameObject> pooledBullets = new Queue<GameObject>();
 
     public Transform barrelPos;
 
@@ -26,7 +26,7 @@ public class GunManager : MonoBehaviour
 
     private void Start()
     {
-        pooledBullets = new List<GameObject>();
+        pooledBullets = new Queue<GameObject>();
 
         GameObject temp;
 
@@ -34,19 +34,15 @@ public class GunManager : MonoBehaviour
         {
             temp = Instantiate(bulletPrefab, barrelPos.position, Quaternion.identity);
             temp.SetActive(false);
-            pooledBullets.Add(temp);
+            pooledBullets.Enqueue(temp);
         }
     }
 
     public GameObject GetPooledBullet()
     {
-        for(int i = 0; i < magazine; ++i)
-        {
-            if (!pooledBullets[i].activeInHierarchy)
-                return pooledBullets[i];
-        }
-
-        return null;
+        GameObject obj = pooledBullets.Dequeue();
+        pooledBullets.Enqueue(obj);
+        return obj;
     }
 
 
@@ -56,7 +52,7 @@ public class GunManager : MonoBehaviour
     }
     private void Update()
     {
-        Debug.DrawLine(barrelPos.position,  barrelPos.position - barrelPos.forward , Color.blue);
+        Debug.DrawLine(barrelPos.position, GetShootDir(), Color.blue);
 
         //Debug.DrawLine(barrelPos.position, barrelPos.position - barrelPos.forward, Color.blue);
     }

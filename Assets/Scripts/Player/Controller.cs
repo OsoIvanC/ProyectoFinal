@@ -90,6 +90,7 @@ public class Controller : MonoBehaviour, IController
     [SerializeField]
     float newHeight;
 
+    public bool isAttacking;
 
     [Header("Armas")]
     [SerializeField]
@@ -160,6 +161,10 @@ public class Controller : MonoBehaviour, IController
 
         if (!myStats.CanAttack) return;
 
+        if (isRolling) return;
+
+        isAttacking = true;
+
         //if(isRolling) return;
 
         myStats.CanAttack = false;
@@ -172,6 +177,8 @@ public class Controller : MonoBehaviour, IController
     public void AttackReset()
     {
         myStats.CanAttack = true;
+
+        isAttacking=false;
 
         Debug.Log("CAN ATTACK");
     }
@@ -266,16 +273,23 @@ public class Controller : MonoBehaviour, IController
     }
     public void Shoot()
     {
-        GameObject bullet = GunManager.instance.GetPooledBullet();
+       GameObject bullet = GunManager.instance.GetPooledBullet();
 
-        if(bullet == null) return;
         
+       if (bullet == null) return;
+
+       
+        //bullet.transform.SetParent(GunManager.instance.barrelPos);
+
+       bullet.transform.position = GunManager.instance.barrelPos.position;
         
-        bullet.transform.position = GunManager.instance.barrelPos.position;
-        bullet.transform.rotation = GunManager.instance.barrelPos.localRotation;
-        bullet.SetActive(true);
-        
-   }
+       bullet.transform.forward = -GunManager.instance.barrelPos.forward;
+       //bullet.transform.localRotation = Quaternion.Euler(90, 45, 0);
+
+
+       bullet.SetActive(true);
+
+    }
 
     public void TakeDamage(float value)
     {
