@@ -10,6 +10,7 @@ public class WeaponManager : MonoBehaviour
     [SerializeField] List<Weapon> weapons;
     [SerializeField] Weapon activeWeapon;
     [SerializeField] ControllerAnimations animations;
+    [SerializeField] Controller controller; 
     public List<Weapon> Weapons { get { return weapons; } protected set { weapons = value; } }
 
 
@@ -18,8 +19,8 @@ public class WeaponManager : MonoBehaviour
 
         instance = this;
         animations = GetComponentInParent<ControllerAnimations>();
+        controller = GetComponentInParent<Controller>();
 
-        
         activeWeapon = GetActiveWeapon();
     }
 
@@ -40,7 +41,10 @@ public class WeaponManager : MonoBehaviour
 
     public void ChangeWeapon(Weapon newWeapon)
     {
-        
+
+        if (controller.isAttacking)
+            return;
+
         if (activeWeapon == newWeapon)
             return;
 
