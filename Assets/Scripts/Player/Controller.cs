@@ -3,10 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
-
-
-
 [System.Serializable]
 public struct Stats
 {
@@ -201,6 +197,8 @@ public class Controller : MonoBehaviour, IController
     public void Move()
     {
         
+        if (isRolling) return;
+        
         attackAnimTime = _inputVector.magnitude <= 0 ? 0.75f : 0.9f ;
 
         animations.GetAnimator.SetFloat("SpeedMultiplier", _inputVector.magnitude <= 0 ? 1f : 0.90f);
@@ -210,9 +208,6 @@ public class Controller : MonoBehaviour, IController
             myStats.CanRoll = false;
             return;
         }
-
-
-        if (isRolling) return;
 
         myStats.CanRoll = true;
         
