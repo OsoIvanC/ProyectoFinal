@@ -9,7 +9,7 @@ public class DealDamage : MonoBehaviour
         if (other.CompareTag("Enemy"))
         {
             Debug.Log("ATTACKHIT");
-            other.gameObject.GetComponent<EnemyController>().TakeDamage(this.GetComponentInParent<Controller>().PlayerStats.AttackDamage);
+            other.gameObject.GetComponent<IController>().TakeDamage(this.GetComponentInParent<Controller>().PlayerStats.AttackDamage);
         }
     }
 

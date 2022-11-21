@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class GunManager : MonoBehaviour
 {
-    public static GunManager instance;
+   
 
     public float bulletVelocity;
 
-    public Queue<GameObject> pooledBullets = new Queue<GameObject>();
+    public Queue<GameObject> pooledBullets;
 
     public Transform barrelPos;
 
@@ -18,10 +18,7 @@ public class GunManager : MonoBehaviour
 
     public Vector3 shootDir;
 
-    private void Awake()
-    {
-        instance = this;
-    }
+    public float damage;
 
 
     private void Start()
@@ -29,10 +26,15 @@ public class GunManager : MonoBehaviour
         pooledBullets = new Queue<GameObject>();
 
         GameObject temp;
+        //GameObject bullets = new GameObject("Bullets");
+
+        //bullets.transform.position = Vector3.zero;
 
         for (int i = 0; i < magazine; ++i)
         {
             temp = Instantiate(bulletPrefab, barrelPos.position, Quaternion.identity);
+            temp.transform.SetParent(this.transform);
+            temp.GetComponent<Bullet>().manager = this;
             temp.SetActive(false);
             pooledBullets.Enqueue(temp);
         }
@@ -50,10 +52,5 @@ public class GunManager : MonoBehaviour
     {
         return barrelPos.position - barrelPos.forward;
     }
-    private void Update()
-    {
-        Debug.DrawLine(barrelPos.position, GetShootDir(), Color.blue);
-
-        //Debug.DrawLine(barrelPos.position, barrelPos.position - barrelPos.forward, Color.blue);
-    }
+    
 }

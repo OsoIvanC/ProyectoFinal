@@ -3,10 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
-
-
-
 [System.Serializable]
 public struct Stats
 {
@@ -97,6 +93,8 @@ public class Controller : MonoBehaviour, IController
         Weapon Melee;
     [SerializeField]
         Weapon Range;
+    [SerializeField]
+        GunManager gunManager;
 
     void Awake()
     {
@@ -108,6 +106,8 @@ public class Controller : MonoBehaviour, IController
         controller = GetComponent<CharacterController>();
 
         animations = GetComponentInChildren<ControllerAnimations>();
+
+        gunManager = GetComponentInChildren<GunManager>();
 
         isRolling = false;
 
@@ -142,7 +142,7 @@ public class Controller : MonoBehaviour, IController
         RollAction();
     
 
-          Debug.DrawRay(transform.position + Vector3.up, transform.forward, Color.red);
+          //Debug.DrawRay(transform.position + Vector3.up, transform.forward, Color.red);
     }
 
     private void OnEnable()
@@ -201,6 +201,8 @@ public class Controller : MonoBehaviour, IController
     public void Move()
     {
         
+        if (isRolling) return;
+        
         attackAnimTime = _inputVector.magnitude <= 0 ? 0.75f : 0.9f ;
 
         animations.GetAnimator.SetFloat("SpeedMultiplier", _inputVector.magnitude <= 0 ? 1f : 0.90f);
@@ -210,9 +212,6 @@ public class Controller : MonoBehaviour, IController
             myStats.CanRoll = false;
             return;
         }
-
-
-        if (isRolling) return;
 
         myStats.CanRoll = true;
         
@@ -273,7 +272,7 @@ public class Controller : MonoBehaviour, IController
     }
     public void Shoot()
     {
-       GameObject bullet = GunManager.instance.GetPooledBullet();
+       GameObject bullet = gunManager.GetPooledBullet();
 
         
        if (bullet == null) return;
@@ -281,9 +280,9 @@ public class Controller : MonoBehaviour, IController
        
         //bullet.transform.SetParent(GunManager.instance.barrelPos);
 
-       bullet.transform.position = GunManager.instance.barrelPos.position;
+       bullet.transform.position = gunManager.barrelPos.position;
         
-       bullet.transform.forward = -GunManager.instance.barrelPos.forward;
+       bullet.transform.forward = gunManager.barrelPos.forward;
        //bullet.transform.localRotation = Quaternion.Euler(90, 45, 0);
 
 

@@ -39,7 +39,7 @@ public class ControllerAnimations : MonoBehaviour
     
     public void ActivateCollider()
     {
-        activeCollider = inventory.ActiveWeapon.GetComponent<Collider>();
+        activeCollider = WeaponManager.instance.activeWeapon.GetComponent<Collider>();
 
         if (activeCollider != null && !activeCollider.enabled)
             activeCollider.enabled = true;
