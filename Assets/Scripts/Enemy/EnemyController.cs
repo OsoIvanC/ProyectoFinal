@@ -32,9 +32,42 @@ struct EnemyStats
 
 
 }
-public class EnemyController : MonoBehaviour
+public class EnemyController : MonoBehaviour, IController
 {
+    public void Attack()
+    {
+        throw new System.NotImplementedException();
+    }
 
+    public void Death()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void Gravity()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void Move()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void Rotate()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void Shoot()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void TakeDamage(float value)
+    {
+        throw new System.NotImplementedException();
+    }
 }
 
 

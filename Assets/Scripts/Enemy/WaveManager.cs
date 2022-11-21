@@ -30,7 +30,7 @@ public class WaveManager : MonoBehaviour
     [SerializeField]
     float timeToSpawn;
     [SerializeField]
-    int numberOfEnemies;
+    int numberOfEnemies, maxNumberOfEnemiesInScreen;
     [SerializeField]
     float statsMultiplier;
 
@@ -40,18 +40,65 @@ public class WaveManager : MonoBehaviour
     [Header("Enemies")]
     public GameObject enemiePrefab;
     Queue<GameObject> enemiesQueue;
-    
+
+    Queue<GameObject> enemiesQueue1;
+    Queue<GameObject> enemiesQueue2;
+    int spawnedEnemiesCount;
+
 
     private void Awake()
     {
         instance = this;
-
+        spawnedEnemiesCount = 0;
         //UpdateRoomLists();
 
         InitWaves();
         //actualWave = GetActualWave();
     }
 
+
+    void PoolEnemieCreator()
+    {
+        enemiesQueue1 = new Queue<GameObject>();
+        enemiesQueue2 = new Queue<GameObject>();
+
+        GameObject temp;
+
+        for (int i = 0; i < maxNumberOfEnemiesInScreen; i++)
+        {
+            temp = Instantiate(enemiePrefab, new Vector3(1000,1000,1000), Quaternion.identity);
+            temp.transform.SetParent(this.transform);
+            temp.SetActive(false);
+            enemiesQueue1.Enqueue(temp);
+
+         
+        }
+    }
+
+    GameObject GenerateEnemy(Vector3 pos,Quaternion rot,Transform parent)
+    {
+        GameObject retValue = enemiesQueue1.Dequeue();
+
+        retValue.transform.SetParent(parent);
+
+        retValue.transform.localPosition = pos;
+
+        retValue.transform.localRotation = rot;
+
+        retValue.SetActive(true);
+
+        enemiesQueue1.Enqueue(retValue);
+
+        return retValue;
+    }
+
+
+    void DeleteEnemy(GameObject enemy)
+    {
+        enemy.transform.SetParent(null);
+        enemy.SetActive(false);
+        spawnedEnemiesCount--;
+    }
 
     public void UpdateRoomLists()
     {
@@ -72,7 +119,6 @@ public class WaveManager : MonoBehaviour
 
         for (int i = 0; i < numberOfWaves; i++)
         {
-
             if (i > 0)
                 ModifyWaveValues();
 
@@ -81,6 +127,8 @@ public class WaveManager : MonoBehaviour
             waves.Enqueue(temp);
             wavesList.Add(temp);
         }
+
+        PoolEnemieCreator();
 
         StartWave(GetActualWave());
     }
@@ -98,19 +146,35 @@ public class WaveManager : MonoBehaviour
   
     public void StartWave(Wave wave)
     {
-        enemiesQueue = new Queue<GameObject> ();
+        spawnedEnemiesCount = 0;
+        StartCoroutine(WaveController(wave));
+        //enemiesQueue = new Queue<GameObject> ();
 
-        GameObject temp;
+        //GameObject temp;
 
-        for (int i = 0; i < wave.numberOfEnemies; i++)
-        {
-            temp = Instantiate(enemiePrefab, transform.position, Quaternion.identity);
-            temp.transform.SetParent(this.transform);
-            temp.SetActive(false);
-            enemiesQueue.Enqueue(temp);
-        }
+        //for (int i = 0; i < wave.numberOfEnemies; i++)
+        //{
+        //    temp = GenerateEnemy(transform.position, Quaternion.identity, this.transform);
+        //    temp.SetActive(false);
+        //    enemiesQueue.Enqueue(temp);
+        //}
     }
 
-
-
+    IEnumerator WaveController(Wave wave)
+    {
+        var eof = new WaitForEndOfFrame();
+        int totalEnemiesSpawned = 0;
+        while (totalEnemiesSpawned < wave.numberOfEnemies)
+        {
+            if(spawnedEnemiesCount >= maxNumberOfEnemiesInScreen)
+            {
+                yield return eof;
+                continue;
+            }
+            GenerateEnemy(Vector3.zero, Quaternion.identity, transform);
+            spawnedEnemiesCount++;
+            totalEnemiesSpawned++;
+            yield return new WaitForSeconds(wave.timeToSpawn);
+        }
+    }
 }

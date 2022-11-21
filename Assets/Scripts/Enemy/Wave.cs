@@ -6,7 +6,7 @@ using UnityEngine;
 public class Wave 
 {
     [SerializeField]
-    float timeToSpawn;
+    public float timeToSpawn;
 
     [SerializeField]
     public int numberOfEnemies;
