@@ -71,7 +71,6 @@ public class WaveManager : MonoBehaviour
             temp.SetActive(false);
             enemiesQueue1.Enqueue(temp);
 
-         
         }
     }
 

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GunManager : MonoBehaviour
 {
-    public static GunManager instance;
+   
 
     public float bulletVelocity;
 
@@ -18,10 +18,7 @@ public class GunManager : MonoBehaviour
 
     public Vector3 shootDir;
 
-    private void Awake()
-    {
-        instance = this;
-    }
+    public float damage;
 
 
     private void Start()
@@ -29,14 +26,15 @@ public class GunManager : MonoBehaviour
         pooledBullets = new Queue<GameObject>();
 
         GameObject temp;
-        GameObject bullets = new GameObject("Bullets");
+        //GameObject bullets = new GameObject("Bullets");
 
-        bullets.transform.position = Vector3.zero;
+        //bullets.transform.position = Vector3.zero;
 
         for (int i = 0; i < magazine; ++i)
         {
             temp = Instantiate(bulletPrefab, barrelPos.position, Quaternion.identity);
-            temp.transform.SetParent(bullets.transform);
+            temp.transform.SetParent(this.transform);
+            temp.GetComponent<Bullet>().manager = this;
             temp.SetActive(false);
             pooledBullets.Enqueue(temp);
         }

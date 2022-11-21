@@ -3,58 +3,149 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public enum State
-{
-    IDLE,
-    ATTACKING
-}
-public class RangeEnemy : MonoBehaviour
-{
-    [SerializeField]
-    float attackRange;
 
+public class RangeEnemy : EnemyController,IController
+{
+    
     [SerializeField]
     LayerMask playerMask;
 
     [SerializeField]
-    State state;
+    Transform player;
 
     [SerializeField]
-    Transform player;
+    Transform tower;
+
+    [SerializeField]
+    Animator animator;
+
+    [SerializeField]
+    float checkRange;
+
+    [SerializeField]
+    GunManager gunManager;
+
+    [SerializeField]
+    float fireRate;
+
+    Collider col;
+    bool allowFire;
 
     private void Awake()
     {
-        state = State.IDLE;
+        animator = GetComponent<Animator>();
+
+        gunManager = GetComponent<GunManager>();
+
+        allowFire = true;
+      
+        col = GetComponent<Collider>(); 
     }
 
     private void OnDrawGizmosSelected()
     {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, stats.attackRange);
+
         Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, attackRange);
+        Gizmos.DrawWireSphere(transform.position,checkRange);
     }
     void CheckAttackRange()
     {
-        Collider[] hitColliders = Physics.OverlapSphere(transform.position, attackRange,playerMask);
-        
-        if (hitColliders.Length <= 0)
+        Collider[] attackColliders = Physics.OverlapSphere(transform.position, stats.attackRange, playerMask);
+        Collider[] reachColliders = Physics.OverlapSphere(transform.position, checkRange, playerMask);
+
+        if (reachColliders.Length <= 0)
         {
-            state = State.IDLE;
+            animator.SetBool("isOn", false);
             player = null;
+            col.enabled = false;
             return;
         }
-        else
-            state = State.ATTACKING;
+        
+        col.enabled = true;
 
-        player = hitColliders[0].transform;
+        animator.SetBool("isOn", true);
 
-        foreach (var hitCollider in hitColliders)
+        player = reachColliders[0].transform;
+
+        Rotate();
+
+        if (attackColliders.Length > 0)
         {
-            Debug.Log("Tower Attacking");
+            if (allowFire)
+                StartCoroutine(ShootCall());
         }
+
     }
+
 
     private void LateUpdate()
     {
         CheckAttackRange();
+    }
+
+    public void Attack()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void TakeDamage(float value)
+    {
+        stats.Health -= value;
+
+        if (stats.Health <= 0)
+            Death();
+    }
+
+    public void Move()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void Rotate()
+    {
+        tower.LookAt(player);
+    }
+
+    public void Gravity()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void Shoot()
+    {
+        GameObject bullet = gunManager.GetPooledBullet();
+
+        if (bullet == null) return;
+
+        //bullet.transform.SetParent(GunManager.instance.barrelPos);
+
+        bullet.transform.position = gunManager.barrelPos.position;
+
+        bullet.transform.forward = gunManager.barrelPos.forward;
+        //bullet.transform.localRotation = Quaternion.Euler(90, 45, 0);
+
+        bullet.SetActive(true);
+
+    }
+
+
+    IEnumerator ShootCall()
+    {
+        allowFire = false;
+
+        Debug.Log("Shoot");
+
+        //Shoot();
+
+        yield return new WaitForSeconds(fireRate);
+
+        allowFire = true;
+    }
+
+    public void Death()
+    {
+        Destroy(gameObject);
     }
 }

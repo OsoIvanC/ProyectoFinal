@@ -5,69 +5,28 @@ using UnityEditor;
 using DG.Tweening;
 
 
-
-
-
 [System.Serializable]
-enum EnemyType
+public struct EnemyStats
 {
-    MELEE,
-    RANGE
-}
+    public float maxHealth;
 
-[System.Serializable]
-struct EnemyStats
-{
-    [SerializeField]
-    float maxHealth;
+    
+    public float health;
 
-    [SerializeField]
-    float health;
+    
+    public float attackRange;
 
-    [SerializeField]
-    float attackRange;
+    
+    public float attackDamage;
 
-    [SerializeField]
-    float attackDamage;
-
+    public float Health;
 
 }
-public class EnemyController : MonoBehaviour, IController
+public class EnemyController : MonoBehaviour
 {
-    public void Attack()
-    {
-        throw new System.NotImplementedException();
-    }
+    [SerializeField]
+    protected EnemyStats stats;
 
-    public void Death()
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public void Gravity()
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public void Move()
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public void Rotate()
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public void Shoot()
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public void TakeDamage(float value)
-    {
-        throw new System.NotImplementedException();
-    }
 }
 
 

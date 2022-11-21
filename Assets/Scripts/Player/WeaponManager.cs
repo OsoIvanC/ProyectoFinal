@@ -8,7 +8,7 @@ public class WeaponManager : MonoBehaviour
 {
     public static WeaponManager instance;
     [SerializeField] List<Weapon> weapons;
-    [SerializeField] Weapon activeWeapon;
+    [SerializeField] public Weapon activeWeapon;
     [SerializeField] ControllerAnimations animations;
     [SerializeField] Controller controller; 
     public List<Weapon> Weapons { get { return weapons; } protected set { weapons = value; } }
