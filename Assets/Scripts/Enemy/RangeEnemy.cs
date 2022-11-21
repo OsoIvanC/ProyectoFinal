@@ -137,7 +137,7 @@ public class RangeEnemy : EnemyController,IController
 
         Debug.Log("Shoot");
 
-        //Shoot();
+        Shoot();
 
         yield return new WaitForSeconds(fireRate);
 
