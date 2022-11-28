@@ -9,6 +9,7 @@ public struct Stats
 
     [SerializeField]
     float maxHealth;
+    [SerializeField]
     float health;
     [SerializeField]
     float attackDamage;

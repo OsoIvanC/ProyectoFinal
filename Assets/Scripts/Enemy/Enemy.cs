@@ -2,10 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-public class Enemy:EnemyController,IController
+public class Enemy : EnemyController, IController
 {
     NavMeshAgent agent;
-
 
     [SerializeField]
     float attackRate;
@@ -16,10 +15,16 @@ public class Enemy:EnemyController,IController
     [SerializeField]
     LayerMask layerMask;
 
+    bool isAttacking;
+
+    bool isAlive;
+
     Animator animator;
 
     bool canAttack;
-    bool allowAttack;
+
+    [SerializeField]
+    Collider headCollider;
 
     private void Awake()
     {
@@ -27,61 +32,76 @@ public class Enemy:EnemyController,IController
 
         animator = GetComponent<Animator>();
 
-        allowAttack = true;
-        
+        canAttack = true;
+
         agent.stoppingDistance = stats.attackRange;
     }
 
-    bool CheckAttack()
+    private void OnEnable()
+    {
+        //GetComponent<Collider>().enabled = true;
+        isAlive = true;
+        GetComponent<NavMeshAgent>().enabled = true;
+    }
+    void CheckAttack()
     {
         Vector3 fwd = transform.TransformDirection(Vector3.forward);
 
-        Debug.DrawRay(transform.position + new Vector3(0, 0.5f, 0), fwd * stats.attackRange,Color.red);
+        Debug.DrawRay(transform.position + new Vector3(0, 0.5f, 0), fwd * stats.attackRange, Color.red);
 
-        if (Physics.Raycast(transform.position + new Vector3(0, 0.5f, 0) , fwd , stats.attackRange, layerMask))
-            return true;
-        
-        return false;
+        if (Physics.Raycast(transform.position + new Vector3(0, 0.5f, 0), fwd, stats.attackRange, layerMask))
+            Attack();
     }
 
-    private void LateUpdate()
-    {
-       canAttack =  CheckAttack();
-    }
    
+
     public void Attack()
     {
         if (!canAttack)
             return;
 
-        if (allowAttack)
-            StartCoroutine(AttackCall());
-    }
-    IEnumerator AttackCall()
-    {
-        allowAttack = false;
+        if(!isAlive)
+            return;
+
+        isAttacking = true;
+
+        canAttack = false;
 
         animator.SetTrigger("Attack");
-        yield return new WaitForSeconds(attackRate);
-
-        allowAttack = true;
+        
     }
 
+    public void AttackReset()
+    {
+        canAttack = true;
+
+        isAttacking = false;
+
+        Debug.Log("CAN ATTACK");
+    }
 
     private void Update()
     {
-        Move();
-        
-        Rotate();
+         Move();
+
+         Rotate();
+
+         CheckAttack();
     }
-    
+
     public void TakeDamage(float value)
     {
-        throw new System.NotImplementedException();
+        stats.health -= value;
+
+        if (stats.health <= 0)
+            Death();
     }
 
     public void Move()
     {
+        if (!agent.enabled)
+            return;
+
         agent.SetDestination(player.position);
     }
 
@@ -100,8 +120,27 @@ public class Enemy:EnemyController,IController
         throw new System.NotImplementedException();
     }
 
+    public void TurnOff()
+    {
+        gameObject.SetActive(false);
+    }
     public void Death()
     {
-        throw new System.NotImplementedException();
+        //GetComponent<Collider>().enabled = false;
+        isAlive = false;
+        GetComponent<NavMeshAgent>().enabled = false;
+
+        animator.SetTrigger("Die");
+
     }
+
+    public void ActivateCollider()
+    {
+        headCollider.enabled = true;
+    }
+    public void DeactivateCollider()
+    {
+        headCollider.enabled = false;
+    }
+
 }

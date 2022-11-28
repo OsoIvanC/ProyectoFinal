@@ -19,13 +19,20 @@ public struct EnemyStats
     
     public float attackDamage;
 
-    public float Health;
 
 }
 public class EnemyController : MonoBehaviour
 {
+    
+    public  EnemyStats stats;
+
     [SerializeField]
-    protected EnemyStats stats;
+    protected AudioClip deathClip;
+
+
+
+ 
+
 
 }
 

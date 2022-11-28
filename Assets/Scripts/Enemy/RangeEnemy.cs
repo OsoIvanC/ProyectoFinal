@@ -92,9 +92,9 @@ public class RangeEnemy : EnemyController,IController
 
     public void TakeDamage(float value)
     {
-        stats.Health -= value;
+        stats.health -= value;
 
-        if (stats.Health <= 0)
+        if (stats.health <= 0)
             Death();
     }
 

@@ -159,10 +159,11 @@ MonoBehaviour:
     health: 0
     attackRange: 3.5
     attackDamage: 0
+  deathClip: {fileID: 0}
   playerMask:
     serializedVersion: 2
     m_Bits: 128
-  player: {fileID: 0}
+  player: {fileID: 2398850673841513822, guid: 4eab865c302262948975938cceb2e0b9, type: 3}
   tower: {fileID: 4441418822354639369}
   animator: {fileID: 0}
   checkRange: 6.5
@@ -198,6 +199,7 @@ MonoBehaviour:
   bulletPrefab: {fileID: 239082426044051377, guid: 8280256b93654cc479bb2e5c826a9f55, type: 3}
   magazine: 30
   shootDir: {x: 0, y: 0, z: 0}
+  damage: 0
 --- !u!1 &4441418822354639366
 GameObject:
   m_ObjectHideFlags: 0

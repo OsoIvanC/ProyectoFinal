@@ -147,6 +147,8 @@ public class WaveManager : MonoBehaviour
     {
         spawnedEnemiesCount = 0;
         StartCoroutine(WaveController(wave));
+
+
         //enemiesQueue = new Queue<GameObject> ();
 
         //GameObject temp;

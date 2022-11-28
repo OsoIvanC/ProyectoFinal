@@ -8,6 +8,8 @@ public class Bullet : MonoBehaviour
     public Vector3 direction;
     public float bulletVelocity;
     public GunManager manager;
+    public GameObject destroyAnim;
+    public float destroyAnimTime;
 
 
     Rigidbody rb;
@@ -32,6 +34,18 @@ public class Bullet : MonoBehaviour
 
     void DeActive()
     {
+        destroyAnim.SetActive(true);
+        GetComponentInChildren<MeshRenderer>().enabled = false;
+        rb.velocity = Vector3.zero;
+        Invoke("ReturnToPool", destroyAnimTime);
+
+      
+    }
+
+    void ReturnToPool()
+    {
+        GetComponentInChildren<MeshRenderer>().enabled = true;
+        destroyAnim.SetActive(false);
         gameObject.SetActive(false);
         //gameObject.transform.parent = null;
         transform.position = manager.barrelPos.position;
@@ -39,7 +53,6 @@ public class Bullet : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        DeActive();
         Debug.Log(collision.gameObject.name);
 
         IController controller;
@@ -49,6 +62,7 @@ public class Bullet : MonoBehaviour
         if (controller != null)
             controller.TakeDamage(manager.damage);
 
+        DeActive();
         //gameObject.SetActive(false);
     }
 }

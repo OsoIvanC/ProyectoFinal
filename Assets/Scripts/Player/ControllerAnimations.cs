@@ -13,7 +13,7 @@ public class ControllerAnimations : MonoBehaviour
     Controller controller;
 
     [SerializeField]
-    Collider activeCollider;
+    Collider swordCollider;
 
     [SerializeField]
     Inventory inventory;
@@ -39,10 +39,12 @@ public class ControllerAnimations : MonoBehaviour
     
     public void ActivateCollider()
     {
-        activeCollider = WeaponManager.instance.activeWeapon.GetComponent<Collider>();
+        //activeCollider = WeaponManager.instance.activeWeapon.GetComponent<Collider>();
 
-        if (activeCollider != null && !activeCollider.enabled)
-            activeCollider.enabled = true;
+        //if (activeCollider != null && !activeCollider.enabled)
+        //    activeCollider.enabled = true;
+
+        swordCollider.enabled = true;
     }
 
     public void ChangeAnimLayer(int layer, int value)
@@ -51,10 +53,12 @@ public class ControllerAnimations : MonoBehaviour
     }
     public void DeactivateCollider()
     {
-        if (activeCollider != null && activeCollider.enabled)
-            activeCollider.enabled = false;
+        //if (activeCollider != null && activeCollider.enabled)
+        //    activeCollider.enabled = false;
 
-        activeCollider = null;
+        //activeCollider = null;
+
+        swordCollider.enabled = false;
     }
 
     public void ResetAttack()
