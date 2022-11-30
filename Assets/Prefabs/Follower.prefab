@@ -1005,7 +1005,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.8
-  m_Speed: 0.1
+  m_Speed: 1
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
@@ -1033,7 +1033,7 @@ MonoBehaviour:
     maxHealth: 10
     health: 2
     attackRange: 1.5
-    attackDamage: 2
+    attackDamage: 1
   deathClip: {fileID: 0}
   attackRate: 0
   player: {fileID: 2398850673841513822, guid: 4eab865c302262948975938cceb2e0b9, type: 3}

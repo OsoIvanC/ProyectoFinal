@@ -34,6 +34,8 @@ public class Enemy : EnemyController, IController
 
         canAttack = true;
 
+        player = FindObjectOfType<Controller>().transform;
+
         agent.stoppingDistance = stats.attackRange;
     }
 
@@ -102,6 +104,7 @@ public class Enemy : EnemyController, IController
         if (!agent.enabled)
             return;
 
+        //player = FindObjectOfType<Controller>().transform;
         agent.SetDestination(player.position);
     }
 

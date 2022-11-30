@@ -199,7 +199,7 @@ MonoBehaviour:
   bulletPrefab: {fileID: 239082426044051377, guid: 8280256b93654cc479bb2e5c826a9f55, type: 3}
   magazine: 30
   shootDir: {x: 0, y: 0, z: 0}
-  damage: 0
+  damage: 1
 --- !u!1 &4441418822354639366
 GameObject:
   m_ObjectHideFlags: 0

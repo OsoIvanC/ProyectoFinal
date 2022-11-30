@@ -26,12 +26,12 @@ public class DealDamage : MonoBehaviour
 
         if (other.CompareTag("Enemy"))
         {
-            this.GetComponent<BoxCollider>().enabled = false;
+            this.GetComponent<Collider>().enabled = false;
         }
 
         if (other.CompareTag("Player"))
         {
-            this.GetComponent<BoxCollider>().enabled = false;
+            this.GetComponent<Collider>().enabled = false;
         }
     }
 }

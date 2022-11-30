@@ -1,9 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 
+
+public enum EnemyType
+{
+    MELEE,
+    RANGE
+}
 public class WaveManager : MonoBehaviour
 {
+
 
     public static WaveManager instance;
 
@@ -30,30 +38,48 @@ public class WaveManager : MonoBehaviour
     [SerializeField]
     float timeToSpawn;
     [SerializeField]
-    int numberOfEnemies, maxNumberOfEnemiesInScreen;
+    int numberOfEnemies , maxMelee , maxRange;
     [SerializeField]
     float statsMultiplier;
-
-
+    int maxNumberOfEnemiesInScreen;
 
 
     [Header("Enemies")]
-    public GameObject enemiePrefab;
-    Queue<GameObject> enemiesQueue;
+    public GameObject meleePrefab;
+    public GameObject rangePrefab;
+    
 
     Queue<GameObject> enemiesQueue1;
     Queue<GameObject> enemiesQueue2;
-    int spawnedEnemiesCount;
+    int spawnedMeleeCount;
+    int spawnedRangeCount;
 
+
+    [SerializeField]
+    List<Transform> spawnPoints;
 
     private void Awake()
     {
         instance = this;
-        spawnedEnemiesCount = 0;
+        spawnedMeleeCount = 0;
+        spawnedRangeCount = 0;
         //UpdateRoomLists();
+
+
+        maxNumberOfEnemiesInScreen = maxMelee + maxRange; 
 
         InitWaves();
         //actualWave = GetActualWave();
+    }
+
+
+    Transform RandomSpwan()
+    {
+        Transform t = spawnPoints[Random.Range(0, spawnPoints.Count)];
+
+        //spawnPoints.Remove(t);
+
+        return t;
     }
 
 
@@ -63,18 +89,26 @@ public class WaveManager : MonoBehaviour
         enemiesQueue2 = new Queue<GameObject>();
 
         GameObject temp;
+        GameObject temp2;
 
-        for (int i = 0; i < maxNumberOfEnemiesInScreen; i++)
+        for (int i = 0; i < maxMelee; i++)
         {
-            temp = Instantiate(enemiePrefab, new Vector3(1000,1000,1000), Quaternion.identity);
+            temp = Instantiate(meleePrefab, new Vector3(1000,1000,1000), Quaternion.identity);
             temp.transform.SetParent(this.transform);
             temp.SetActive(false);
             enemiesQueue1.Enqueue(temp);
+        }
 
+        for (int i = 0; i < maxRange; i++)
+        {
+            temp2 = Instantiate(rangePrefab, new Vector3(1000, 1000, 1000), Quaternion.identity);
+            temp2.transform.SetParent(this.transform);
+            temp2.SetActive(false);
+            enemiesQueue2.Enqueue(temp2);
         }
     }
 
-    GameObject GenerateEnemy(Vector3 pos,Quaternion rot,Transform parent)
+    GameObject GenerateMeleeEnemy(Vector3 pos,Quaternion rot,Transform parent)
     {
         GameObject retValue = enemiesQueue1.Dequeue();
 
@@ -91,12 +125,40 @@ public class WaveManager : MonoBehaviour
         return retValue;
     }
 
+    GameObject GenerateRangeEnemy(Vector3 pos, Quaternion rot, Transform parent)
+    {
+        GameObject retValue = enemiesQueue2.Dequeue();
 
-    void DeleteEnemy(GameObject enemy)
+        retValue.transform.SetParent(parent);
+
+        retValue.transform.localPosition = pos;
+
+        retValue.transform.localRotation = rot;
+
+        retValue.SetActive(true);
+
+        enemiesQueue2.Enqueue(retValue);
+
+        return retValue;
+    }
+
+    void DeleteEnemy(GameObject enemy,EnemyType type)
     {
         enemy.transform.SetParent(null);
         enemy.SetActive(false);
-        spawnedEnemiesCount--;
+
+        switch (type)
+        {
+            case EnemyType.MELEE:
+                spawnedMeleeCount--;
+                break;
+            case EnemyType.RANGE:
+                spawnedRangeCount--;
+                break;
+            default:
+                break;
+        }
+
     }
 
     public void UpdateRoomLists()
@@ -145,35 +207,42 @@ public class WaveManager : MonoBehaviour
   
     public void StartWave(Wave wave)
     {
-        spawnedEnemiesCount = 0;
+        spawnedMeleeCount = 0;
         StartCoroutine(WaveController(wave));
-
-
-        //enemiesQueue = new Queue<GameObject> ();
-
-        //GameObject temp;
-
-        //for (int i = 0; i < wave.numberOfEnemies; i++)
-        //{
-        //    temp = GenerateEnemy(transform.position, Quaternion.identity, this.transform);
-        //    temp.SetActive(false);
-        //    enemiesQueue.Enqueue(temp);
-        //}
     }
 
     IEnumerator WaveController(Wave wave)
     {
         var eof = new WaitForEndOfFrame();
         int totalEnemiesSpawned = 0;
+
+        int r ;
         while (totalEnemiesSpawned < wave.numberOfEnemies)
         {
-            if(spawnedEnemiesCount >= maxNumberOfEnemiesInScreen)
-            {
-                yield return eof;
-                continue;
+            r = Random.Range(0, 2);
+
+            if (r == 0) 
+            { 
+                if (spawnedMeleeCount >= maxMelee)
+                {
+                    yield return eof;
+                    continue;
+                }
+                GenerateMeleeEnemy(RandomSpwan().position,Quaternion.identity,null);
+                spawnedMeleeCount++;
             }
-            GenerateEnemy(Vector3.zero, Quaternion.identity, transform);
-            spawnedEnemiesCount++;
+            else
+            {
+                if (spawnedRangeCount >= maxRange)
+                {
+                    yield return eof;
+                    continue;
+                }
+
+                GenerateRangeEnemy(RandomSpwan().position, Quaternion.identity, null);
+                spawnedRangeCount++;
+            }
+            
             totalEnemiesSpawned++;
             yield return new WaitForSeconds(wave.timeToSpawn);
         }

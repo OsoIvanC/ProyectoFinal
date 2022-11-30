@@ -52,7 +52,7 @@ MonoBehaviour:
   bulletVelocity: 7
   manager: {fileID: 0}
   destroyAnim: {fileID: 5938744012873858493}
-  destroyAnimTime: 0.2
+  destroyAnimTime: 0.3
 --- !u!54 &-7531856379385622067
 Rigidbody:
   m_ObjectHideFlags: 0
