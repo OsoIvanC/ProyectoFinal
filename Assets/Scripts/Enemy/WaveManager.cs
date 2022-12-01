@@ -11,8 +11,6 @@ public enum EnemyType
 }
 public class WaveManager : MonoBehaviour
 {
-
-
     public static WaveManager instance;
 
     [Header("ROOMS")]
@@ -41,6 +39,7 @@ public class WaveManager : MonoBehaviour
     int numberOfEnemies , maxMelee , maxRange;
     [SerializeField]
     float statsMultiplier;
+    [SerializeField]
     int maxNumberOfEnemiesInScreen;
 
 
@@ -51,22 +50,35 @@ public class WaveManager : MonoBehaviour
 
     Queue<GameObject> enemiesQueue1;
     Queue<GameObject> enemiesQueue2;
+    int spawnedEnemiesCount;
     int spawnedMeleeCount;
     int spawnedRangeCount;
 
+    
+    public int enemiesKilled;
+    public int totalEnemiesSpawned ;
 
     [SerializeField]
     List<Transform> spawnPoints;
 
+   
+    public GameObject lastEnemieInWave;
+
     private void Awake()
     {
         instance = this;
+
+        spawnedEnemiesCount = 0;
         spawnedMeleeCount = 0;
         spawnedRangeCount = 0;
+        
+        totalEnemiesSpawned = 0;
+        enemiesKilled = 0;
+        
         //UpdateRoomLists();
 
 
-        maxNumberOfEnemiesInScreen = maxMelee + maxRange; 
+        //maxNumberOfEnemiesInScreen = maxMelee + maxRange; 
 
         InitWaves();
         //actualWave = GetActualWave();
@@ -142,10 +154,11 @@ public class WaveManager : MonoBehaviour
         return retValue;
     }
 
-    void DeleteEnemy(GameObject enemy,EnemyType type)
+    public void DeleteEnemy(GameObject enemy,EnemyType type)
     {
         enemy.transform.SetParent(null);
         enemy.SetActive(false);
+
 
         switch (type)
         {
@@ -159,6 +172,23 @@ public class WaveManager : MonoBehaviour
                 break;
         }
 
+        enemiesKilled ++;
+
+        CheckWave();
+    }
+
+
+    void CheckWave()
+    {
+        if (enemiesKilled >= totalEnemiesSpawned)
+        {
+            NewWave();
+        }
+    }
+
+    void NewWave()
+    {
+        Debug.Log("NEW WAVE");
     }
 
     public void UpdateRoomLists()
@@ -177,6 +207,8 @@ public class WaveManager : MonoBehaviour
         waves = new Queue<Wave>();
 
         Wave temp;
+
+        //maxNumberOfEnemiesInScreen = maxMelee + maxRange;
 
         for (int i = 0; i < numberOfWaves; i++)
         {
@@ -214,12 +246,21 @@ public class WaveManager : MonoBehaviour
     IEnumerator WaveController(Wave wave)
     {
         var eof = new WaitForEndOfFrame();
-        int totalEnemiesSpawned = 0;
+        
 
         int r ;
+
+        GameObject temp = null;
+
         while (totalEnemiesSpawned < wave.numberOfEnemies)
         {
             r = Random.Range(0, 2);
+
+            if (spawnedEnemiesCount >= maxNumberOfEnemiesInScreen)
+            {
+                yield return eof;
+                continue;
+            }
 
             if (r == 0) 
             { 
@@ -228,7 +269,7 @@ public class WaveManager : MonoBehaviour
                     yield return eof;
                     continue;
                 }
-                GenerateMeleeEnemy(RandomSpwan().position,Quaternion.identity,null);
+                temp = GenerateMeleeEnemy(RandomSpwan().position,Quaternion.identity,null);
                 spawnedMeleeCount++;
             }
             else
@@ -239,11 +280,16 @@ public class WaveManager : MonoBehaviour
                     continue;
                 }
 
-                GenerateRangeEnemy(RandomSpwan().position, Quaternion.identity, null);
+                temp = GenerateRangeEnemy(RandomSpwan().position, Quaternion.identity, null);
                 spawnedRangeCount++;
             }
-            
+
+
+            lastEnemieInWave = temp;
+
+            spawnedEnemiesCount++;
             totalEnemiesSpawned++;
+            
             yield return new WaitForSeconds(wave.timeToSpawn);
         }
     }

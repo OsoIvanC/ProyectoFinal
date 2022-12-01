@@ -125,13 +125,17 @@ public class Enemy : EnemyController, IController
 
     public void TurnOff()
     {
-        gameObject.SetActive(false);
+
+        WaveManager.instance.DeleteEnemy(this.gameObject, EnemyType.MELEE);
+
     }
     public void Death()
     {
         //GetComponent<Collider>().enabled = false;
         isAlive = false;
         GetComponent<NavMeshAgent>().enabled = false;
+
+        
 
         animator.SetTrigger("Die");
 

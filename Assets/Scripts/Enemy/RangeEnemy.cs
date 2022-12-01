@@ -146,6 +146,7 @@ public class RangeEnemy : EnemyController,IController
 
     public void Death()
     {
-        Destroy(gameObject);
+
+        WaveManager.instance.DeleteEnemy(this.gameObject, EnemyType.RANGE);
     }
 }
