@@ -4,10 +4,9 @@ using UnityEngine;
 
 public class Room : MonoBehaviour
 {
-    [SerializeField]
-    List<Transform> spwanPoints = new List<Transform>();
+    public List<Transform> spwanPoints;
 
-    GameObject door;
+    public List<GameObject> doors;
     
     public bool isActive;
     public Transform GetRandomSpawn()
@@ -18,13 +17,17 @@ public class Room : MonoBehaviour
         return spwanPoints[Random.Range(0,spwanPoints.Count)];
     }
 
-    public void OpenDoor()
+
+    public void OpenDoors()
     {
-        door.SetActive(false);
+        foreach(var door in doors)
+            door.SetActive(false);
     }
+
     public void CloseDoor()
     {
-        door.SetActive(true);
+        foreach (var door in doors)
+            door.SetActive(true);
     }
 
 }

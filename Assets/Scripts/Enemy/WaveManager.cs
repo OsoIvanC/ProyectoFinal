@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
-
+using UnityEngine.ProBuilder.Shapes;
 
 public enum EnemyType
 {
@@ -16,10 +16,8 @@ public class WaveManager : MonoBehaviour
     [Header("ROOMS")]
     [SerializeField]
     List<Room> rooms;
-    [SerializeField]
-    List<Room> activeRooms;
-    [SerializeField]
-    List<Room> notActiveRooms;
+    int roomNumber;
+    int waveNumber;
 
     [Header("WAVES")]
     [SerializeField]
@@ -42,26 +40,22 @@ public class WaveManager : MonoBehaviour
     [SerializeField]
     int maxNumberOfEnemiesInScreen;
 
-
     [Header("Enemies")]
     public GameObject meleePrefab;
     public GameObject rangePrefab;
     
-
     Queue<GameObject> enemiesQueue1;
     Queue<GameObject> enemiesQueue2;
     int spawnedEnemiesCount;
     int spawnedMeleeCount;
     int spawnedRangeCount;
 
-    
     public int enemiesKilled;
     public int totalEnemiesSpawned ;
 
     [SerializeField]
     List<Transform> spawnPoints;
 
-   
     public GameObject lastEnemieInWave;
 
     private void Awake()
@@ -74,16 +68,16 @@ public class WaveManager : MonoBehaviour
         
         totalEnemiesSpawned = 0;
         enemiesKilled = 0;
-        
-        //UpdateRoomLists();
 
+        roomNumber = 0;
 
-        //maxNumberOfEnemiesInScreen = maxMelee + maxRange; 
+       
 
+        UpdateSpawns();
         InitWaves();
+
         //actualWave = GetActualWave();
     }
-
 
     Transform RandomSpwan()
     {
@@ -94,6 +88,17 @@ public class WaveManager : MonoBehaviour
         return t;
     }
 
+
+    void UpdateSpawns()
+    {
+        foreach (Transform t in rooms[roomNumber].spwanPoints)
+            spawnPoints.Add(t);
+    }
+
+    void OpenDoors()
+    {
+        rooms[roomNumber].OpenDoors();    
+    }
 
     void PoolEnemieCreator()
     {
@@ -177,7 +182,6 @@ public class WaveManager : MonoBehaviour
         CheckWave();
     }
 
-
     void CheckWave()
     {
         if (enemiesKilled >= totalEnemiesSpawned)
@@ -188,19 +192,22 @@ public class WaveManager : MonoBehaviour
 
     void NewWave()
     {
+        OpenDoors();
+
+        waveNumber++;
+        roomNumber++;
+
+        Debug.Log("Wave: " + waveNumber);
+        Debug.Log("Room: " + roomNumber);
+        
+        UpdateSpawns();
+
+        StartWave(GetActualWave());
+
         Debug.Log("NEW WAVE");
     }
 
-    public void UpdateRoomLists()
-    {
-        foreach (Room room in rooms)
-        {
-            if(room.isActive)
-                activeRooms.Add(room);
-            else
-                notActiveRooms.Add(room);
-        }
-    }
+    
 
     public void InitWaves()
     {
@@ -239,7 +246,13 @@ public class WaveManager : MonoBehaviour
   
     public void StartWave(Wave wave)
     {
+        spawnedEnemiesCount = 0;
         spawnedMeleeCount = 0;
+        spawnedRangeCount = 0;
+
+        totalEnemiesSpawned = 0;
+        enemiesKilled = 0;
+
         StartCoroutine(WaveController(wave));
     }
 
@@ -247,10 +260,7 @@ public class WaveManager : MonoBehaviour
     {
         var eof = new WaitForEndOfFrame();
         
-
         int r ;
-
-        GameObject temp = null;
 
         while (totalEnemiesSpawned < wave.numberOfEnemies)
         {
@@ -269,7 +279,7 @@ public class WaveManager : MonoBehaviour
                     yield return eof;
                     continue;
                 }
-                temp = GenerateMeleeEnemy(RandomSpwan().position,Quaternion.identity,null);
+                 GenerateMeleeEnemy(RandomSpwan().position,Quaternion.identity,null);
                 spawnedMeleeCount++;
             }
             else
@@ -280,12 +290,9 @@ public class WaveManager : MonoBehaviour
                     continue;
                 }
 
-                temp = GenerateRangeEnemy(RandomSpwan().position, Quaternion.identity, null);
+                 GenerateRangeEnemy(RandomSpwan().position, Quaternion.identity, null);
                 spawnedRangeCount++;
             }
-
-
-            lastEnemieInWave = temp;
 
             spawnedEnemiesCount++;
             totalEnemiesSpawned++;

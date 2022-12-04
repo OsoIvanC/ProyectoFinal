@@ -77,8 +77,8 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 0
   serializedVersion: 2
-  m_Radius: 0.003428725
-  m_Center: {x: 0.00030960384, y: 0.0012850742, z: 0.0026081111}
+  m_Radius: 0.004874758
+  m_Center: {x: 0.00030961575, y: 0.0012850704, z: 0.004054107}
 --- !u!114 &1752307503264300804
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -976,7 +976,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7260552733252276334
 Transform:
   m_ObjectHideFlags: 0
@@ -984,7 +984,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8037089780469467860}
-  m_LocalRotation: {x: -0, y: 0.14798945, z: -0, w: 0.98898894}
+  m_LocalRotation: {x: 0, y: 0.14799063, z: 0, w: 0.9889888}
   m_LocalPosition: {x: 7.09, y: 0, z: 12.09}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1036,7 +1036,7 @@ MonoBehaviour:
     attackDamage: 1
   deathClip: {fileID: 0}
   attackRate: 0
-  player: {fileID: 2398850673841513822, guid: 4eab865c302262948975938cceb2e0b9, type: 3}
+  player: {fileID: 0}
   layerMask:
     serializedVersion: 2
     m_Bits: 128
