@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
-using UnityEngine.ProBuilder.Shapes;
+using TMPro;
+
 
 public enum EnemyType
 {
@@ -58,6 +59,11 @@ public class WaveManager : MonoBehaviour
 
     public GameObject lastEnemieInWave;
 
+    [Header("UI")]
+    [SerializeField]
+    TMP_Text wavesText;
+
+
     private void Awake()
     {
         instance = this;
@@ -71,10 +77,11 @@ public class WaveManager : MonoBehaviour
 
         roomNumber = 0;
 
-       
+        
 
         UpdateSpawns();
         InitWaves();
+
 
         //actualWave = GetActualWave();
     }
@@ -91,13 +98,15 @@ public class WaveManager : MonoBehaviour
 
     void UpdateSpawns()
     {
-        foreach (Transform t in rooms[roomNumber].spwanPoints)
-            spawnPoints.Add(t);
+        if (roomNumber < rooms.Count)
+            foreach (Transform t in rooms[roomNumber].spwanPoints)
+                spawnPoints.Add(t);
     }
 
     void OpenDoors()
     {
-        rooms[roomNumber].OpenDoors();    
+        if (roomNumber < rooms.Count)
+            rooms[roomNumber].OpenDoors();    
     }
 
     void PoolEnemieCreator()
@@ -204,10 +213,13 @@ public class WaveManager : MonoBehaviour
 
         StartWave(GetActualWave());
 
-        Debug.Log("NEW WAVE");
+        //Debug.Log("NEW WAVE");
     }
 
-    
+    private void LateUpdate()
+    {
+        wavesText.text = $"{waveNumber + 1}/{numberOfWaves}";
+    }
 
     public void InitWaves()
     {
@@ -236,7 +248,7 @@ public class WaveManager : MonoBehaviour
     public void ModifyWaveValues()
     {
         timeToSpawn *=waveModifier;
-        numberOfEnemies = (int)(numberOfEnemies * waveModifier);
+        numberOfEnemies = (int) Mathf.Ceil(numberOfEnemies * waveModifier);
         statsMultiplier *= waveModifier;
     }
     public Wave GetActualWave()

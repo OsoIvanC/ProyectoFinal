@@ -36,6 +36,7 @@ public class GunManager : MonoBehaviour
             temp.transform.SetParent(this.transform);
             temp.GetComponent<Bullet>().manager = this;
             temp.SetActive(false);
+            temp.layer = temp.transform.parent.gameObject.layer;
             pooledBullets.Enqueue(temp);
         }
     }

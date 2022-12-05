@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 [System.Serializable]
 public struct Stats
@@ -97,6 +98,18 @@ public class Controller : MonoBehaviour, IController
     [SerializeField]
         GunManager gunManager;
 
+    [Header("UI")]
+        public GameObject gameOverPanel;
+        [SerializeField]
+            GameObject pausePanel;
+        [SerializeField]
+            TMP_Text scoreText;
+          
+
+    public static bool pause;
+    public static bool isAlive;
+    public static int score;
+
     void Awake()
     {
 
@@ -111,6 +124,10 @@ public class Controller : MonoBehaviour, IController
         gunManager = GetComponentInChildren<GunManager>();
 
         isRolling = false;
+
+        isAlive = true;
+
+        score = 0;
 
         //MOVE INPUT
         _inputActions.Movement.WALK.performed += ctx => _inputVector = new Vector3(ctx.ReadValue<Vector2>().x, 0, ctx.ReadValue<Vector2>().y);
@@ -127,6 +144,9 @@ public class Controller : MonoBehaviour, IController
         _inputActions.Interactions.Melee.performed += _ => WeaponManager.instance.ChangeWeapon(Melee);
         _inputActions.Interactions.Range.performed += _ => WeaponManager.instance.ChangeWeapon(Range);
 
+        //PAUSE 
+        _inputActions.Interactions.Pause.performed += _ => Pause();
+
 
         initCenterCollider = controller.center;
         initHeight = controller.height; 
@@ -137,13 +157,35 @@ public class Controller : MonoBehaviour, IController
 
     private void Update()
     {
+
+        if (!isAlive)
+            return;
+
+        if (pause)
+            return;
+
+
         Move();
         Gravity();
         Rotate();
         RollAction();
     
-
+        
           //Debug.DrawRay(transform.position + Vector3.up, transform.forward, Color.red);
+    }
+
+    private void LateUpdate()
+    {
+        scoreText.text = $"Score: {score} ";
+    }
+
+    void Pause()
+    {
+        pause = !pause;
+
+        Time.timeScale = pause ? 0 : 1;
+
+        pausePanel.SetActive(pause);
     }
 
     private void OnEnable()
@@ -158,11 +200,14 @@ public class Controller : MonoBehaviour, IController
 
     public void Attack()
     {
-        Debug.Log("AttackInit");
+        //Debug.Log("AttackInit");
 
+        if (!isAlive) return;
         if (!myStats.CanAttack) return;
 
         if (isRolling) return;
+
+        if (pause)  return;
 
         isAttacking = true;
 
@@ -181,11 +226,16 @@ public class Controller : MonoBehaviour, IController
 
         isAttacking=false;
 
-        Debug.Log("CAN ATTACK");
+        //Debug.Log("CAN ATTACK");
     }
     public void Death()
     {
-        Destroy(this.gameObject);
+        animations.PlayAnimTrigger("Die");
+        
+        isAlive = false;
+
+        //GameOver();
+        //Destroy(this.gameObject);
     }
 
     public void Gravity()
@@ -299,5 +349,9 @@ public class Controller : MonoBehaviour, IController
             Death();
     }
 
+  
+
+
    
+    
 }

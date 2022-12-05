@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem.XR;
 
 [RequireComponent(typeof(Animator))]
 
@@ -75,5 +76,9 @@ public class ControllerAnimations : MonoBehaviour
     {
         controller.Shoot();
     }
-
+    public void GameOver()
+    {
+        Time.timeScale = 0;
+        controller.gameOverPanel.SetActive(true);
+    }
 }

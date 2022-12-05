@@ -82,6 +82,11 @@ public class RangeEnemy : EnemyController,IController
 
     private void LateUpdate()
     {
+
+        if (!Controller.isAlive) return;
+
+        if (Controller.pause) return;
+
         CheckAttackRange();
     }
 
@@ -115,6 +120,11 @@ public class RangeEnemy : EnemyController,IController
 
     public void Shoot()
     {
+
+        if (!Controller.isAlive) return;
+
+        if (Controller.pause) return;
+
         GameObject bullet = gunManager.GetPooledBullet();
 
         if (bullet == null) return;
@@ -146,7 +156,7 @@ public class RangeEnemy : EnemyController,IController
 
     public void Death()
     {
-
+        Controller.score += 10;
         WaveManager.instance.DeleteEnemy(this.gameObject, EnemyType.RANGE);
     }
 }

@@ -84,7 +84,12 @@ public class Enemy : EnemyController, IController
 
     private void Update()
     {
-         Move();
+
+        if (!Controller.isAlive) return;
+
+        if (Controller.pause) return;
+
+        Move();
 
          Rotate();
 
@@ -125,7 +130,7 @@ public class Enemy : EnemyController, IController
 
     public void TurnOff()
     {
-
+        Controller.score += 10;
         WaveManager.instance.DeleteEnemy(this.gameObject, EnemyType.MELEE);
 
     }
@@ -133,10 +138,10 @@ public class Enemy : EnemyController, IController
     {
         //GetComponent<Collider>().enabled = false;
         isAlive = false;
+
         GetComponent<NavMeshAgent>().enabled = false;
 
         
-
         animator.SetTrigger("Die");
 
     }

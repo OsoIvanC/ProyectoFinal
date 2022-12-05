@@ -10,6 +10,7 @@ public class Bullet : MonoBehaviour
     public GunManager manager;
     public GameObject destroyAnim;
     public float destroyAnimTime;
+    
 
 
     Rigidbody rb;
@@ -61,6 +62,7 @@ public class Bullet : MonoBehaviour
 
         if (controller != null)
             controller.TakeDamage(manager.damage);
+
 
         DeActive();
         //gameObject.SetActive(false);

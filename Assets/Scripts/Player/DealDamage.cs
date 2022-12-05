@@ -10,13 +10,14 @@ public class DealDamage : MonoBehaviour
 
         if (other.CompareTag("Enemy"))
         {
-            Debug.Log("ATTACKHIT");
+            //Debug.Log("ATTACKHIT");
             other.gameObject.GetComponent<IController>().TakeDamage(this.GetComponentInParent<Controller>().PlayerStats.AttackDamage);
+            
         }
 
         if (other.CompareTag("Player"))
         {
-            Debug.Log("ATTACKHIT");
+            //Debug.Log("ATTACKHIT");
             other.gameObject.GetComponent<IController>().TakeDamage(this.GetComponentInParent<Enemy>().stats.attackDamage);
         }
     }
