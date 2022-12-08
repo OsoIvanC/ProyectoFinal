@@ -34,8 +34,11 @@ public class WaveManager : MonoBehaviour
     [Header("InitValues")]
     [SerializeField]
     float timeToSpawn;
+    
+    int numberOfEnemies;
+    
     [SerializeField]
-    int numberOfEnemies , maxMelee , maxRange;
+    int  maxMelee , maxRange;
     [SerializeField]
     float statsMultiplier;
     [SerializeField]
@@ -77,7 +80,7 @@ public class WaveManager : MonoBehaviour
 
         roomNumber = 0;
 
-        
+        numberOfEnemies = maxMelee + maxRange;
 
         UpdateSpawns();
         InitWaves();
@@ -234,7 +237,7 @@ public class WaveManager : MonoBehaviour
             if (i > 0)
                 ModifyWaveValues();
 
-            temp = new Wave(timeToSpawn , numberOfEnemies , statsMultiplier);
+            temp = new Wave(timeToSpawn , maxMelee, maxRange , statsMultiplier);
 
             waves.Enqueue(temp);
             wavesList.Add(temp);
@@ -248,7 +251,10 @@ public class WaveManager : MonoBehaviour
     public void ModifyWaveValues()
     {
         timeToSpawn *=waveModifier;
-        numberOfEnemies = (int) Mathf.Ceil(numberOfEnemies * waveModifier);
+
+        maxMelee = (int) Mathf.Ceil(maxMelee * waveModifier);
+        maxRange = (int)Mathf.Ceil(maxRange * waveModifier);
+        
         statsMultiplier *= waveModifier;
     }
     public Wave GetActualWave()
@@ -292,7 +298,7 @@ public class WaveManager : MonoBehaviour
                     continue;
                 }
                  GenerateMeleeEnemy(RandomSpwan().position,Quaternion.identity,null);
-                spawnedMeleeCount++;
+                 spawnedMeleeCount++;
             }
             else
             {
@@ -303,7 +309,7 @@ public class WaveManager : MonoBehaviour
                 }
 
                  GenerateRangeEnemy(RandomSpwan().position, Quaternion.identity, null);
-                spawnedRangeCount++;
+                 spawnedRangeCount++;
             }
 
             spawnedEnemiesCount++;

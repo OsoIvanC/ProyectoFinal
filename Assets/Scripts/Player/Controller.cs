@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using Unity.Mathematics;
 
 [System.Serializable]
 public struct Stats
@@ -47,7 +48,6 @@ public struct Stats
 
   
 }
-
 
 [RequireComponent(typeof(CharacterController))]
 public class Controller : MonoBehaviour, IController
@@ -104,7 +104,17 @@ public class Controller : MonoBehaviour, IController
             GameObject pausePanel;
         [SerializeField]
             TMP_Text scoreText;
-          
+
+    [Header("AUDIO")]
+    [SerializeField]
+        AudioClip shootClip;
+    [SerializeField]
+        AudioClip swingClip;
+    [SerializeField]
+        AudioClip deathClip;
+    [SerializeField]
+        AudioSource source;
+
 
     public static bool pause;
     public static bool isAlive;
@@ -122,6 +132,8 @@ public class Controller : MonoBehaviour, IController
         animations = GetComponentInChildren<ControllerAnimations>();
 
         gunManager = GetComponentInChildren<GunManager>();
+
+        source = GetComponent<AudioSource>();
 
         isRolling = false;
 
@@ -211,6 +223,12 @@ public class Controller : MonoBehaviour, IController
 
         isAttacking = true;
 
+        var r = UnityEngine.Random.Range(1, 3);
+
+        source.pitch = r;
+
+        source.PlayOneShot(swingClip);
+
         //if(isRolling) return;
 
         myStats.CanAttack = false;
@@ -299,9 +317,7 @@ public class Controller : MonoBehaviour, IController
 
         controller.Move(transform.forward * rollDistance * Time.deltaTime);
     }
-
-
-    
+  
     public void Rotate()
     {
 
@@ -325,9 +341,13 @@ public class Controller : MonoBehaviour, IController
     {
        GameObject bullet = gunManager.GetPooledBullet();
 
-        
        if (bullet == null) return;
 
+        var r = UnityEngine.Random.Range(1, 3);
+
+        source.pitch = r;
+
+        source.PlayOneShot(shootClip);
        
         //bullet.transform.SetParent(GunManager.instance.barrelPos);
 
@@ -349,9 +369,6 @@ public class Controller : MonoBehaviour, IController
             Death();
     }
 
-  
-
-
-   
+ 
     
 }

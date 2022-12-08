@@ -10,14 +10,18 @@ public class Bullet : MonoBehaviour
     public GunManager manager;
     public GameObject destroyAnim;
     public float destroyAnimTime;
-    
 
+    AudioSource source;
+
+    [SerializeField]
+    AudioClip destroyClip;
 
     Rigidbody rb;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
+        source = GetComponent<AudioSource>();
     }
     private void OnEnable()
     {
@@ -36,6 +40,11 @@ public class Bullet : MonoBehaviour
     void DeActive()
     {
         destroyAnim.SetActive(true);
+        var r = UnityEngine.Random.Range(1, 3);
+
+        source.pitch = r;
+
+        source.PlayOneShot(destroyClip);
         GetComponentInChildren<MeshRenderer>().enabled = false;
         rb.velocity = Vector3.zero;
         Invoke("ReturnToPool", destroyAnimTime);

@@ -11,16 +11,27 @@ public class Wave
     [SerializeField]
     public int numberOfEnemies;
 
+
+    [SerializeField]
+    public int maxMelee;
+
+
+    [SerializeField]
+    public int maxRange;
+
     [SerializeField]
     float statsMultiplier;
 
-    public Wave(float tSpawn,int nEnemies,float sMultiplier = 1.5f)
+    public Wave(float tSpawn,int maxMelee,int maxRange,float sMultiplier = 1.5f)
     {
         timeToSpawn = tSpawn;
-        numberOfEnemies = nEnemies;
+        this.maxMelee = maxMelee;
+        this.maxRange = maxRange;
+
+        numberOfEnemies = maxMelee + maxRange;
+
         statsMultiplier = sMultiplier;
     }
-    
    
 
 }

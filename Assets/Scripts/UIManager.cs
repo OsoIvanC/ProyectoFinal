@@ -8,6 +8,8 @@ public class UIManager : MonoBehaviour
     
     public static UIManager Instance { get; private set; }
 
+    public AudioSource source;
+
     private void Awake()
     {
         Instance = this;
@@ -32,5 +34,10 @@ public class UIManager : MonoBehaviour
     public void LoadNextScene()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1 );
+    }
+
+    public void PlayAudio(AudioClip clip)
+    {
+        source.PlayOneShot(clip);
     }
 }
