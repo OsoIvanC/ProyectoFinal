@@ -27,6 +27,7 @@ public class EnemyController : MonoBehaviour
 
     public EnemyStats stats;
 
+    public Transform spawn;
 
     [Header("AUDIO")]
     [SerializeField]
@@ -37,6 +38,8 @@ public class EnemyController : MonoBehaviour
     protected AudioClip deactivateClip;
     [SerializeField]
     protected AudioClip attackClip;
+
+
 
 
     public virtual void ModifyStats(float value)

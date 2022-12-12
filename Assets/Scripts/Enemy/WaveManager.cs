@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UIElements;
 
 
 public enum EnemyType
@@ -13,7 +14,8 @@ public enum EnemyType
 public class WaveManager : MonoBehaviour
 {
     public static WaveManager instance;
-
+    public const int TimeBetweenWaves = 3;
+    
     [Header("ROOMS")]
     [SerializeField]
     List<Room> rooms;
@@ -65,11 +67,20 @@ public class WaveManager : MonoBehaviour
     [Header("UI")]
     [SerializeField]
     TMP_Text wavesText;
+    [SerializeField]
+    TMP_Text countDown;
+    [SerializeField]
+    GameObject newWavePanel;
+
+
+    public List<Transform> turretSpawns;
 
 
     private void Awake()
     {
         instance = this;
+
+        newWavePanel.SetActive(false);
 
         spawnedEnemiesCount = 0;
         spawnedMeleeCount = 0;
@@ -97,7 +108,6 @@ public class WaveManager : MonoBehaviour
 
         return t;
     }
-
 
     void UpdateSpawns()
     {
@@ -198,7 +208,7 @@ public class WaveManager : MonoBehaviour
     {
         if (enemiesKilled >= totalEnemiesSpawned)
         {
-            NewWave();
+            StartCoroutine(NextWave()); 
         }
     }
 
@@ -290,26 +300,37 @@ public class WaveManager : MonoBehaviour
                 continue;
             }
 
-            if (r == 0) 
-            { 
-                if (spawnedMeleeCount >= maxMelee)
-                {
-                    yield return eof;
-                    continue;
-                }
-                 GenerateMeleeEnemy(RandomSpwan().position,Quaternion.identity,null);
-                 spawnedMeleeCount++;
-            }
-            else
+            if (r == 0)
             {
-                if (spawnedRangeCount >= maxRange)
+                if (spawnedMeleeCount > maxMelee)
                 {
                     yield return eof;
                     continue;
                 }
 
-                 GenerateRangeEnemy(RandomSpwan().position, Quaternion.identity, null);
-                 spawnedRangeCount++;
+                Transform t = RandomSpwan();
+
+                GenerateMeleeEnemy(CheckSpawns(t).position, Quaternion.identity, null);
+
+                spawnedMeleeCount++;
+            }
+            else
+            {
+                if (spawnedRangeCount > maxRange)
+                {
+                    yield return eof;
+                    continue;
+                }
+
+                Transform t = RandomSpwan();
+
+                GameObject turret =  GenerateRangeEnemy(CheckSpawns(t).position, Quaternion.identity, null);
+
+                turret.GetComponent<EnemyController>().spawn = t;
+                
+                turretSpawns.Add(t);
+
+                spawnedRangeCount++;
             }
 
             spawnedEnemiesCount++;
@@ -317,5 +338,31 @@ public class WaveManager : MonoBehaviour
             
             yield return new WaitForSeconds(wave.timeToSpawn);
         }
+    }
+
+
+    IEnumerator NextWave()
+    {
+        int t = TimeBetweenWaves;
+
+        newWavePanel.SetActive(true);
+        
+        while (t > 0)
+        {
+            t--;
+            countDown.text = $" Starts in {t.ToString()}";
+            yield return new WaitForSeconds(1);
+        }
+
+        newWavePanel.SetActive(false);
+
+        NewWave();
+    }
+    Transform CheckSpawns(Transform sp)
+    {
+        if (turretSpawns.Contains(sp))
+            return CheckSpawns(RandomSpwan());
+        else
+            return sp;
     }
 }

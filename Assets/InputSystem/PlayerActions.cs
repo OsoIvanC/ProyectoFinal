@@ -37,15 +37,6 @@ public partial class @PlayerActions : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""JUMP"",
-                    ""type"": ""Button"",
-                    ""id"": ""4e8a0828-f380-48da-b54d-7ba20de8bbb7"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
                     ""name"": ""DASH"",
                     ""type"": ""Button"",
                     ""id"": ""5b39485f-256b-457e-b017-b1c4d8574788"",
@@ -67,22 +58,22 @@ public partial class @PlayerActions : IInputActionCollection2, IDisposable
             ""bindings"": [
                 {
                     ""name"": """",
-                    ""id"": ""dcf6fd3c-d68f-4e82-8090-6deaeddb5182"",
-                    ""path"": ""<Keyboard>/space"",
+                    ""id"": ""142b0a8b-3655-4725-a55f-a72372976ca9"",
+                    ""path"": ""<Keyboard>/shift"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Player"",
-                    ""action"": ""JUMP"",
+                    ""action"": ""DASH"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""142b0a8b-3655-4725-a55f-a72372976ca9"",
-                    ""path"": ""<Keyboard>/leftShift"",
+                    ""id"": ""8cdd4db0-21a4-4a04-844b-d612f873f85e"",
+                    ""path"": ""<Gamepad>/leftTrigger"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Player"",
+                    ""groups"": """",
                     ""action"": ""DASH"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -154,6 +145,61 @@ public partial class @PlayerActions : IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": true
                 },
                 {
+                    ""name"": ""ARROWS"",
+                    ""id"": ""ef4e7648-e2c9-42f6-bb7a-8c9e077f4a06"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""WALK"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""45103312-9e93-4b32-a928-d994702c72c7"",
+                    ""path"": ""<Keyboard>/upArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""WALK"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""32eb53bf-9d72-4d73-ab4c-78b3ef636d93"",
+                    ""path"": ""<Keyboard>/downArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""WALK"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""7ac8abe7-22ee-4a1c-abce-31a1d74a0f9e"",
+                    ""path"": ""<Keyboard>/leftArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""WALK"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""c5416869-12c6-4002-b822-bd0d0acfa82a"",
+                    ""path"": ""<Keyboard>/rightArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""WALK"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
                     ""name"": """",
                     ""id"": ""e35533e9-4697-4300-9bf5-131c298d1395"",
                     ""path"": ""<Mouse>/position"",
@@ -214,6 +260,24 @@ public partial class @PlayerActions : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Swap"",
+                    ""type"": ""Value"",
+                    ""id"": ""e38c66af-f38f-4f77-b046-f0c465563d5e"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Toogle"",
+                    ""type"": ""Button"",
+                    ""id"": ""d0acb64e-f190-4f00-adb4-6dcd7c8a5f11"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -224,6 +288,17 @@ public partial class @PlayerActions : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Player"",
+                    ""action"": ""Attack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e43bb653-6b08-44e2-ae87-9f6e102dd9c1"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
                     ""action"": ""Attack"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -252,8 +327,30 @@ public partial class @PlayerActions : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""b4142766-f927-48cb-9dbb-412ad8497a5a"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Melee"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""3b71dd94-9128-419a-97e8-5fd5b2f52040"",
                     ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Range"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d779acc4-9a98-4d24-b3b8-a82a6b15abbb"",
+                    ""path"": ""<Keyboard>/e"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -293,6 +390,28 @@ public partial class @PlayerActions : IInputActionCollection2, IDisposable
                     ""action"": ""Pause"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""69cec496-9416-4c7f-a9c7-5ace69810828"",
+                    ""path"": ""<Mouse>/scroll"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Swap"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""521d9e5f-6a1e-4140-a30d-7f6b2cafc945"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Toogle"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -308,7 +427,6 @@ public partial class @PlayerActions : IInputActionCollection2, IDisposable
         // Movement
         m_Movement = asset.FindActionMap("Movement", throwIfNotFound: true);
         m_Movement_WALK = m_Movement.FindAction("WALK", throwIfNotFound: true);
-        m_Movement_JUMP = m_Movement.FindAction("JUMP", throwIfNotFound: true);
         m_Movement_DASH = m_Movement.FindAction("DASH", throwIfNotFound: true);
         m_Movement_LOOK = m_Movement.FindAction("LOOK", throwIfNotFound: true);
         // Interactions
@@ -318,6 +436,8 @@ public partial class @PlayerActions : IInputActionCollection2, IDisposable
         m_Interactions_Melee = m_Interactions.FindAction("Melee", throwIfNotFound: true);
         m_Interactions_Range = m_Interactions.FindAction("Range", throwIfNotFound: true);
         m_Interactions_Pause = m_Interactions.FindAction("Pause", throwIfNotFound: true);
+        m_Interactions_Swap = m_Interactions.FindAction("Swap", throwIfNotFound: true);
+        m_Interactions_Toogle = m_Interactions.FindAction("Toogle", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -378,7 +498,6 @@ public partial class @PlayerActions : IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Movement;
     private IMovementActions m_MovementActionsCallbackInterface;
     private readonly InputAction m_Movement_WALK;
-    private readonly InputAction m_Movement_JUMP;
     private readonly InputAction m_Movement_DASH;
     private readonly InputAction m_Movement_LOOK;
     public struct MovementActions
@@ -386,7 +505,6 @@ public partial class @PlayerActions : IInputActionCollection2, IDisposable
         private @PlayerActions m_Wrapper;
         public MovementActions(@PlayerActions wrapper) { m_Wrapper = wrapper; }
         public InputAction @WALK => m_Wrapper.m_Movement_WALK;
-        public InputAction @JUMP => m_Wrapper.m_Movement_JUMP;
         public InputAction @DASH => m_Wrapper.m_Movement_DASH;
         public InputAction @LOOK => m_Wrapper.m_Movement_LOOK;
         public InputActionMap Get() { return m_Wrapper.m_Movement; }
@@ -401,9 +519,6 @@ public partial class @PlayerActions : IInputActionCollection2, IDisposable
                 @WALK.started -= m_Wrapper.m_MovementActionsCallbackInterface.OnWALK;
                 @WALK.performed -= m_Wrapper.m_MovementActionsCallbackInterface.OnWALK;
                 @WALK.canceled -= m_Wrapper.m_MovementActionsCallbackInterface.OnWALK;
-                @JUMP.started -= m_Wrapper.m_MovementActionsCallbackInterface.OnJUMP;
-                @JUMP.performed -= m_Wrapper.m_MovementActionsCallbackInterface.OnJUMP;
-                @JUMP.canceled -= m_Wrapper.m_MovementActionsCallbackInterface.OnJUMP;
                 @DASH.started -= m_Wrapper.m_MovementActionsCallbackInterface.OnDASH;
                 @DASH.performed -= m_Wrapper.m_MovementActionsCallbackInterface.OnDASH;
                 @DASH.canceled -= m_Wrapper.m_MovementActionsCallbackInterface.OnDASH;
@@ -417,9 +532,6 @@ public partial class @PlayerActions : IInputActionCollection2, IDisposable
                 @WALK.started += instance.OnWALK;
                 @WALK.performed += instance.OnWALK;
                 @WALK.canceled += instance.OnWALK;
-                @JUMP.started += instance.OnJUMP;
-                @JUMP.performed += instance.OnJUMP;
-                @JUMP.canceled += instance.OnJUMP;
                 @DASH.started += instance.OnDASH;
                 @DASH.performed += instance.OnDASH;
                 @DASH.canceled += instance.OnDASH;
@@ -439,6 +551,8 @@ public partial class @PlayerActions : IInputActionCollection2, IDisposable
     private readonly InputAction m_Interactions_Melee;
     private readonly InputAction m_Interactions_Range;
     private readonly InputAction m_Interactions_Pause;
+    private readonly InputAction m_Interactions_Swap;
+    private readonly InputAction m_Interactions_Toogle;
     public struct InteractionsActions
     {
         private @PlayerActions m_Wrapper;
@@ -448,6 +562,8 @@ public partial class @PlayerActions : IInputActionCollection2, IDisposable
         public InputAction @Melee => m_Wrapper.m_Interactions_Melee;
         public InputAction @Range => m_Wrapper.m_Interactions_Range;
         public InputAction @Pause => m_Wrapper.m_Interactions_Pause;
+        public InputAction @Swap => m_Wrapper.m_Interactions_Swap;
+        public InputAction @Toogle => m_Wrapper.m_Interactions_Toogle;
         public InputActionMap Get() { return m_Wrapper.m_Interactions; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -472,6 +588,12 @@ public partial class @PlayerActions : IInputActionCollection2, IDisposable
                 @Pause.started -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnPause;
                 @Pause.performed -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnPause;
                 @Pause.canceled -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnPause;
+                @Swap.started -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnSwap;
+                @Swap.performed -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnSwap;
+                @Swap.canceled -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnSwap;
+                @Toogle.started -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnToogle;
+                @Toogle.performed -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnToogle;
+                @Toogle.canceled -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnToogle;
             }
             m_Wrapper.m_InteractionsActionsCallbackInterface = instance;
             if (instance != null)
@@ -491,6 +613,12 @@ public partial class @PlayerActions : IInputActionCollection2, IDisposable
                 @Pause.started += instance.OnPause;
                 @Pause.performed += instance.OnPause;
                 @Pause.canceled += instance.OnPause;
+                @Swap.started += instance.OnSwap;
+                @Swap.performed += instance.OnSwap;
+                @Swap.canceled += instance.OnSwap;
+                @Toogle.started += instance.OnToogle;
+                @Toogle.performed += instance.OnToogle;
+                @Toogle.canceled += instance.OnToogle;
             }
         }
     }
@@ -507,7 +635,6 @@ public partial class @PlayerActions : IInputActionCollection2, IDisposable
     public interface IMovementActions
     {
         void OnWALK(InputAction.CallbackContext context);
-        void OnJUMP(InputAction.CallbackContext context);
         void OnDASH(InputAction.CallbackContext context);
         void OnLOOK(InputAction.CallbackContext context);
     }
@@ -518,5 +645,7 @@ public partial class @PlayerActions : IInputActionCollection2, IDisposable
         void OnMelee(InputAction.CallbackContext context);
         void OnRange(InputAction.CallbackContext context);
         void OnPause(InputAction.CallbackContext context);
+        void OnSwap(InputAction.CallbackContext context);
+        void OnToogle(InputAction.CallbackContext context);
     }
 }

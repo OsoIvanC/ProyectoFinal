@@ -13,6 +13,7 @@ public class WeaponManager : MonoBehaviour
     [SerializeField] Controller controller; 
     public List<Weapon> Weapons { get { return weapons; } protected set { weapons = value; } }
 
+    bool toogle;
 
     private void Awake()
     {
@@ -71,5 +72,23 @@ public class WeaponManager : MonoBehaviour
         activeWeapon.gameObject.SetActive(true);
     }
 
-    
+    public void ScrollWeapon(Vector2 value)
+    {
+
+        if (value.y > 0)
+            ChangeWeapon(Controller.Instance.Melee);
+        else
+            ChangeWeapon(Controller.Instance.Range);
+    }
+
+    public void Toogle()
+    {
+        toogle = !toogle;
+
+        if (toogle)
+            ChangeWeapon(Controller.Instance.Melee);
+        else
+            ChangeWeapon(Controller.Instance.Range);
+    }
+
 }

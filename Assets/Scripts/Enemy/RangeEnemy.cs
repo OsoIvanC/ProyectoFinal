@@ -158,5 +158,6 @@ public class RangeEnemy : EnemyController,IController
     {
         Controller.score += 10;
         WaveManager.instance.DeleteEnemy(this.gameObject, EnemyType.RANGE);
+        WaveManager.instance.turretSpawns.Remove(spawn);
     }
 }

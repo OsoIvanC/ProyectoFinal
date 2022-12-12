@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using Unity.Mathematics;
+using UnityEngine.InputSystem;
 
 [System.Serializable]
 public struct Stats
@@ -55,6 +56,8 @@ public class Controller : MonoBehaviour, IController
     [SerializeField]
     Stats myStats;
 
+    public static Controller Instance;
+
     public Stats PlayerStats { get { return myStats; } }
 
     [SerializeField]
@@ -92,9 +95,9 @@ public class Controller : MonoBehaviour, IController
 
     [Header("Armas")]
     [SerializeField]
-        Weapon Melee;
+        public Weapon Melee;
     [SerializeField]
-        Weapon Range;
+        public Weapon Range;
     [SerializeField]
         GunManager gunManager;
 
@@ -116,12 +119,17 @@ public class Controller : MonoBehaviour, IController
         AudioSource source;
 
 
+    [SerializeField]
+        TrailRenderer trailRenderer;
+
     public static bool pause;
     public static bool isAlive;
     public static int score;
 
     void Awake()
     {
+
+        Instance = this;
 
         myStats.Init();
 
@@ -141,6 +149,10 @@ public class Controller : MonoBehaviour, IController
 
         score = 0;
 
+        //Cursor.visible = false;
+
+        trailRenderer.enabled = false;
+
         //MOVE INPUT
         _inputActions.Movement.WALK.performed += ctx => _inputVector = new Vector3(ctx.ReadValue<Vector2>().x, 0, ctx.ReadValue<Vector2>().y);
         _inputActions.Movement.WALK.canceled += _ => _inputVector = Vector3.zero;
@@ -158,6 +170,11 @@ public class Controller : MonoBehaviour, IController
 
         //PAUSE 
         _inputActions.Interactions.Pause.performed += _ => Pause();
+
+        //
+        _inputActions.Interactions.Swap.performed += ctx => WeaponManager.instance.ScrollWeapon(ctx.ReadValue<Vector2>());
+
+        _inputActions.Interactions.Toogle.performed += _ => WeaponManager.instance.Toogle();
 
 
         initCenterCollider = controller.center;
@@ -221,6 +238,9 @@ public class Controller : MonoBehaviour, IController
 
         if (pause)  return;
 
+
+        trailRenderer.enabled = true;
+
         isAttacking = true;
 
         var r = UnityEngine.Random.Range(1, 3);
@@ -241,6 +261,8 @@ public class Controller : MonoBehaviour, IController
     public void AttackReset()
     {
         myStats.CanAttack = true;
+
+        trailRenderer.enabled = false;
 
         isAttacking=false;
 

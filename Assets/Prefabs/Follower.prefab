@@ -1031,10 +1031,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stats:
-    maxHealth: 10
-    health: 2
+    maxHealth: 1
+    health: 1
     attackRange: 1.5
     attackDamage: 1
+  spawn: {fileID: 0}
   deathClip: {fileID: 0}
   activateClip: {fileID: 0}
   deactivateClip: {fileID: 0}
