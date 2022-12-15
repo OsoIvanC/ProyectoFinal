@@ -20,7 +20,7 @@ public class GunManager : MonoBehaviour
 
     public float damage;
 
-
+  
     private void Start()
     {
         pooledBullets = new Queue<GameObject>();

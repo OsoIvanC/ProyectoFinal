@@ -5,6 +5,7 @@ using UnityEngine;
 using TMPro;
 using Unity.Mathematics;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 [System.Serializable]
 public struct Stats
@@ -28,10 +29,16 @@ public struct Stats
     bool canAttack ;
     [SerializeField]
     bool canRoll;
+    [SerializeField]
+    int maxBullets;
+    [SerializeField]
+    int bullets;
    
-    public float MaxHealth { get { return maxHealth; } }
+    public float MaxHealth { get { return maxHealth; } set { maxHealth = value; } }
+    public int MaxBullets { get { return maxBullets; } }
+    public int Bullets { get { return bullets; } set{ bullets = value; } }
     public float Health { get { return health; } set { health = value; } }
-    public float AttackDamage { get { return attackDamage; } }
+    public float AttackDamage { get { return attackDamage; } set { attackDamage = value;  } }
     public float AttackSpeed { get { return attackSpeed; } }
     public float MovementSpeed { get { return movementSpeed; } }
     public float SmoothRotValue { get { return smoothRotValue; } }
@@ -43,8 +50,10 @@ public struct Stats
     public void Init()
     {
         this.health = this.maxHealth;
+        this.bullets = this.maxBullets;
         this.canAttack = true;
         this.canRoll = true;
+
     }
 
   
@@ -53,8 +62,8 @@ public struct Stats
 [RequireComponent(typeof(CharacterController))]
 public class Controller : MonoBehaviour, IController
 {
-    [SerializeField]
-    Stats myStats;
+    
+    public Stats myStats;
 
     public static Controller Instance;
 
@@ -107,6 +116,10 @@ public class Controller : MonoBehaviour, IController
             GameObject pausePanel;
         [SerializeField]
             TMP_Text scoreText;
+        [SerializeField]
+            Slider healthBar;
+        [SerializeField]
+            Image healthBarI;
 
     [Header("AUDIO")]
     [SerializeField]
@@ -116,11 +129,14 @@ public class Controller : MonoBehaviour, IController
     [SerializeField]
         AudioClip deathClip;
     [SerializeField]
+        AudioClip rollClip;
+    [SerializeField]
         AudioSource source;
 
 
     [SerializeField]
         TrailRenderer trailRenderer;
+
 
     public static bool pause;
     public static bool isAlive;
@@ -133,6 +149,9 @@ public class Controller : MonoBehaviour, IController
 
         myStats.Init();
 
+
+        healthBar.maxValue = myStats.MaxHealth;
+
         _inputActions = new PlayerActions();
 
         controller = GetComponent<CharacterController>();
@@ -141,6 +160,8 @@ public class Controller : MonoBehaviour, IController
 
         gunManager = GetComponentInChildren<GunManager>();
 
+        gunManager.magazine = myStats.MaxBullets;
+        
         source = GetComponent<AudioSource>();
 
         isRolling = false;
@@ -182,7 +203,22 @@ public class Controller : MonoBehaviour, IController
     
     }
 
- 
+
+    public void HealthBar()
+    {
+        healthBar.value = myStats.Health;
+
+        float perc = (myStats.Health / myStats.MaxHealth) * 100;
+
+        if(perc > 75)
+            healthBarI.color = Color.green;
+        else if(perc <= 75 && perc > 50 )
+            healthBarI.color = Color.yellow;
+        else if(perc <= 50 && perc > 25)
+            healthBarI.color = new Color(255, 165, 0);
+        else
+            healthBarI.color = Color.red;
+    }
 
     private void Update()
     {
@@ -206,6 +242,8 @@ public class Controller : MonoBehaviour, IController
     private void LateUpdate()
     {
         scoreText.text = $"Score: {score} ";
+
+        HealthBar();
     }
 
     void Pause()
@@ -322,6 +360,14 @@ public class Controller : MonoBehaviour, IController
         isRolling = true;
 
         animations.PlayAnimTrigger("Roll");
+
+
+        var r = UnityEngine.Random.Range(1, 3);
+
+        source.pitch = r;
+
+        source.PlayOneShot(rollClip);
+
         //controller.Move(transform.forward * rollDistance * Time.deltaTime);
         controller.center = newCenterCollider;
         controller.height = newHeight;
@@ -365,6 +411,9 @@ public class Controller : MonoBehaviour, IController
 
        if (bullet == null) return;
 
+       if(myStats.Bullets <= 0)
+            return ;
+
         var r = UnityEngine.Random.Range(1, 3);
 
         source.pitch = r;
@@ -391,6 +440,33 @@ public class Controller : MonoBehaviour, IController
             Death();
     }
 
- 
-    
+    public void ModifyValues(float value)
+    {
+        myStats.AttackDamage *= value;
+
+        myStats.MaxHealth *= value;
+
+        myStats.Health = myStats.MaxHealth;
+
+        myStats.Bullets = myStats.MaxBullets;
+
+        healthBar.maxValue = myStats.MaxHealth;
+
+    }
+
+    public void AddBullets(int value)
+    {
+        if (myStats.Bullets + value >= myStats.MaxBullets)
+            myStats.Bullets = myStats.MaxBullets;
+        else
+            myStats.Bullets += value;
+    }
+
+    public void AddHealth(int value)
+    {
+        if (myStats.Health + value >= myStats.MaxHealth)
+            myStats.Health = myStats.MaxHealth;
+        else
+            myStats.Health += value;
+    }
 }
