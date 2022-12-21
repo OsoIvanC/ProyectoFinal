@@ -33,7 +33,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Slash
-  m_Speed: 1.8
+  m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -6367900637849590208}
@@ -82,7 +82,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Roll
-  m_Speed: 2.4
+  m_Speed: 2.2
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -7871133691411745550}
@@ -252,7 +252,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Shoot
-  m_Speed: 1.2
+  m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -558018313544623868}

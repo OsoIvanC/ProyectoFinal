@@ -31,19 +31,12 @@ public class RangeEnemy : EnemyController,IController
     Collider col;
     bool allowFire;
 
-    AudioSource source;
     private void Awake()
     {
         animator = GetComponent<Animator>();
 
         gunManager = GetComponent<GunManager>();
 
-        source = GetComponent<AudioSource>();
-
-        stats.health = stats.maxHealth;
-
-        healthBar.maxValue = stats.maxHealth;
-        
         allowFire = true;
       
         col = GetComponent<Collider>(); 
@@ -67,24 +60,18 @@ public class RangeEnemy : EnemyController,IController
             animator.SetBool("isOn", false);
             player = null;
             col.enabled = false;
-            //source.PlayOneShot(deactivateClip);
             return;
         }
         
         col.enabled = true;
 
-        //source.PlayOneShot(activateClip);
         animator.SetBool("isOn", true);
 
-
-        if (reachColliders[0].CompareTag("Player"))
-            player = reachColliders[0].transform;
-        else
-            player = null;
+        player = reachColliders[0].transform;
 
         Rotate();
 
-        if (attackColliders.Length > 0 && player != null)
+        if (attackColliders.Length > 0)
         {
             if (allowFire)
                 StartCoroutine(ShootCall());
@@ -92,18 +79,13 @@ public class RangeEnemy : EnemyController,IController
 
     }
 
-    public void PlayClip(AudioClip clip)
-    {
-        source.PlayOneShot(clip);
-    }
+
     private void LateUpdate()
     {
 
         if (!Controller.isAlive) return;
 
         if (Controller.pause) return;
-
-        HealthBar();
 
         CheckAttackRange();
     }

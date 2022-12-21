@@ -36,15 +36,6 @@ public class UIManager : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1 );
     }
 
-    public void ActivateObj(GameObject gO)
-    {
-        gO.SetActive(true);
-    }
-
-    public void DeactivateObj(GameObject gO)
-    {
-        gO.SetActive(false);
-    }
     public void PlayAudio(AudioClip clip)
     {
         source.PlayOneShot(clip);

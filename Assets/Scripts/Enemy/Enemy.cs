@@ -36,10 +36,6 @@ public class Enemy : EnemyController, IController
 
         player = FindObjectOfType<Controller>().transform;
 
-        stats.health = stats.maxHealth;
-
-        healthBar.maxValue = stats.maxHealth;
-
         agent.stoppingDistance = stats.attackRange;
     }
 
@@ -100,16 +96,8 @@ public class Enemy : EnemyController, IController
          CheckAttack();
     }
 
-    private void LateUpdate()
-    {
-        HealthBar();
-    }
-
     public void TakeDamage(float value)
     {
-        if(!isAlive)
-            return ;
-
         stats.health -= value;
 
         if (stats.health <= 0)
