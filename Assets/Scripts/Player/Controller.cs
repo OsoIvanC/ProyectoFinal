@@ -141,7 +141,7 @@ public class Controller : MonoBehaviour, IController
     public static bool pause;
     public static bool isAlive;
     public static int score;
-
+    public static bool canPause;
     void Awake()
     {
 
@@ -168,6 +168,8 @@ public class Controller : MonoBehaviour, IController
 
         isAlive = true;
 
+        canPause = true;
+        
         score = 0;
 
         //Cursor.visible = false;
@@ -248,6 +250,9 @@ public class Controller : MonoBehaviour, IController
 
     void Pause()
     {
+        if (!canPause)
+            return;
+
         pause = !pause;
 
         Time.timeScale = pause ? 0 : 1;
@@ -311,6 +316,7 @@ public class Controller : MonoBehaviour, IController
         animations.PlayAnimTrigger("Die");
         
         isAlive = false;
+        canPause = false;
 
         //GameOver();
         //Destroy(this.gameObject);
