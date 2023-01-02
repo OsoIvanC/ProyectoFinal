@@ -56,7 +56,6 @@ public struct Stats
 
     }
 
-  
 }
 
 [RequireComponent(typeof(CharacterController))]
