@@ -2,17 +2,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-
+using TMPro;
 public class UIManager : MonoBehaviour
 {
-    
+
+    public TMP_InputField menuField;
     public static UIManager Instance { get; private set; }
+    public static string playerName;
 
     public AudioSource source;
 
     private void Awake()
     {
         Instance = this;
+
+        if (menuField != null)
+            menuField.onEndEdit.AddListener(SetName);    
+    }
+
+    void SetName(string name)
+    {
+        playerName = name;  
     }
     public void Restart(GameObject panelToDeactivate)
     {

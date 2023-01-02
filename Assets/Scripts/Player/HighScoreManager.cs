@@ -4,30 +4,25 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using System.IO;
-using UnityEngine.SocialPlatforms.Impl;
+
 
 public class HighScoreManager : MonoBehaviour
 {
     [SerializeField]
-    HighScore scores;
+    public static HighScore scores;
+
+    public static HighScoreManager instance;
 
     [SerializeField]
-    Button test;
+    TMPro.TMP_Text[] highScores;
 
     //string path;
     private void Awake()
     {
+        instance = this;
         scores = ReadJson();
-
-        AddScore(new Score(150, "Pedro"));
-        AddScore(new Score(150, "Luis"));
-        AddScore(new Score(150, "Lupe"));
-        AddScore(new Score(120, "Pedro"));
-        AddScore(new Score(120, "Lupe"));
-
-        test.onClick.AddListener(SaveIntoJson);
     }
-    public void SaveIntoJson()
+    public  void SaveIntoJson()
     {
         scores.scores = Sort(scores.scores);
        
@@ -36,7 +31,7 @@ public class HighScoreManager : MonoBehaviour
         File.WriteAllText(Application.dataPath + "/HighScore.json", json);
     }
 
-    void AddScore(Score s)
+    public static void AddScore(Score s)
     {
         foreach (var score in scores.scores)
         {
@@ -51,6 +46,15 @@ public class HighScoreManager : MonoBehaviour
 
         scores.scores.Add(s);
 
+    }
+
+    public void ShowHS()
+    {
+   
+        for (int i = 0; i < scores.scores.Count; i++)
+        {
+            highScores[i].text = scores.scores[i].name + "--" + scores.scores[i].value;
+        }
     }
 
     public HighScore ReadJson()

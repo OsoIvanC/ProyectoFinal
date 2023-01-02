@@ -119,6 +119,8 @@ public class Controller : MonoBehaviour, IController
             Slider healthBar;
         [SerializeField]
             Image healthBarI;
+        [SerializeField]
+            TMP_Text nameText;
 
     [Header("AUDIO")]
     [SerializeField]
@@ -200,7 +202,8 @@ public class Controller : MonoBehaviour, IController
 
 
         initCenterCollider = controller.center;
-        initHeight = controller.height; 
+        initHeight = controller.height;
+        nameText.text = UIManager.playerName;
     
     }
 
@@ -316,6 +319,10 @@ public class Controller : MonoBehaviour, IController
         
         isAlive = false;
         canPause = false;
+
+        HighScoreManager.AddScore(new Score(score, UIManager.playerName));
+        HighScoreManager.instance.SaveIntoJson();
+        HighScoreManager.instance.ShowHS();
 
         //GameOver();
         //Destroy(this.gameObject);
