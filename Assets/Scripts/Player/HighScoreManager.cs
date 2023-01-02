@@ -4,52 +4,72 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using System.IO;
+using UnityEngine.SocialPlatforms.Impl;
 
 public class HighScoreManager : MonoBehaviour
 {
     [SerializeField]
-    List<Score> scores;
+    HighScore scores;
 
     [SerializeField]
     Button test;
 
-    string path;
+    //string path;
     private void Awake()
     {
-        path = Application.persistentDataPath + "/HighScores.json";
+        scores = ReadJson();
+
+        AddScore(new Score(150, "Pedro"));
+        AddScore(new Score(150, "Luis"));
+        AddScore(new Score(150, "Lupe"));
+        AddScore(new Score(120, "Pedro"));
+        AddScore(new Score(120, "Lupe"));
+
         test.onClick.AddListener(SaveIntoJson);
-
-        AddScore(new Score(10,"Carlos"));
-        AddScore(new Score(20, "Ivan"));
-        AddScore(new Score(30, "Ivan"));
-        AddScore(new Score(50, "Carlos"));
-
     }
     public void SaveIntoJson()
     {
+        scores.scores = Sort(scores.scores);
+       
+        string json = JsonUtility.ToJson(scores);
 
-        Debug.Log("Clicked");
-
-        AddScore(new Score(80, "Ivan"));
-        AddScore(new Score(90, "Carlos"));
-
-        scores = Sort(scores);
+        File.WriteAllText(Application.dataPath + "/HighScore.json", json);
     }
 
-    public void AddScore(Score s)
+    void AddScore(Score s)
     {
-   
-        foreach (var item in scores)
+        foreach (var score in scores.scores)
         {
-            if (item.name == s.name)
+            if (score.name == s.name)
             {
-                item.value = s.value;
+                if(s.value > score.value)
+                    score.value = s.value;
+                
                 return;
             }
-        
         }
-        scores.Add(s);
+
+        scores.scores.Add(s);
+
     }
+
+    public HighScore ReadJson()
+    {
+        HighScore hS = new HighScore();
+
+        try
+        {
+            hS = JsonUtility.FromJson<HighScore>(Application.dataPath + "/HighScore.json");
+        }
+        catch
+        {
+            hS = new HighScore();
+        }
+
+        return hS;
+
+    }
+
 
     public List<Score> Sort(List<Score> s)
     {
@@ -59,5 +79,15 @@ public class HighScoreManager : MonoBehaviour
 
         return highScores;
     }
-   
+}
+
+[System.Serializable]
+public class HighScore
+{
+    public List<Score> scores;
+
+    public HighScore()
+    {
+        scores = new List<Score>();
+    }
 }
